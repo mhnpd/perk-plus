@@ -7,14 +7,13 @@ import { shadows } from './shadows'
 import { overrides } from './overrides'
 import { typography } from './typography'
 import { customShadows } from './custom-shadows'
-import { AppTheme } from './types'
 
 interface ThemeProviderProps {
   children: ReactNode;
 }
 
 export default function ThemeProvider({ children }: ThemeProviderProps) {
-  // @ts-ignore
+  // @ts-expect-error hard to fix
   const memoizedValue:ThemeOptions = useMemo(
     () => ({
       palette: palette(),
@@ -28,7 +27,7 @@ export default function ThemeProvider({ children }: ThemeProviderProps) {
 
   const theme = createTheme(memoizedValue)
 
-  // @ts-ignore
+  // @ts-expect-error hard to fix
   theme.components = overrides(theme)
 
   return (

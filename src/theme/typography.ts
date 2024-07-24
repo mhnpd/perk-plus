@@ -1,4 +1,3 @@
-import { Theme } from '@mui/material'
 
 export function remToPx(value: string) {
   return Math.round(parseFloat(value) * 16)
@@ -14,7 +13,7 @@ interface ResponsiveFontSizesProps {
   lg: number
 }
 
-export function responsiveFontSizes({ sm, md, lg }:ResponsiveFontSizesProps) {
+export function responsiveFontSizes({ sm, md, lg }: ResponsiveFontSizesProps) {
   return {
     '@media (min-width:600px)': {
       fontSize: pxToRem(sm),
@@ -110,4 +109,4 @@ export const typography = {
   },
 }
 
-export type CustomTypography = Theme['typography'] & typeof typography
+export type CustomTypography = typeof typography

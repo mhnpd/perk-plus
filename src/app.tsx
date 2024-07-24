@@ -2,6 +2,7 @@ import './global.css'
 import { Suspense } from 'react'
 import { Navigate, Outlet, useRoutes } from 'react-router-dom'
 import DashboardLayout from './dasboard-layout'
+import LoginPage from './pages/login/login'
 
 const IndexPage = () => {
   return <h1>Dashboard</h1>
@@ -10,6 +11,11 @@ const IndexPage = () => {
 export default function App() {
   const routes = useRoutes([
     {
+      element: <LoginPage />,
+      index: true,
+    },
+    {
+      path: 'app',
       element: (
         <DashboardLayout>
           <Suspense>
@@ -24,10 +30,6 @@ export default function App() {
         // { path: 'blog', element: <BlogPage /> },
       ],
     },
-    // {
-    //   path: 'login',
-    //   element: <LoginPage />,
-    // },
     // {
     //   path: '404',
     //   element: <Page404 />,

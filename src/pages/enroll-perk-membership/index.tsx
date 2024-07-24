@@ -11,17 +11,31 @@ import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
 import { EnrollUserBody, postEnrollUser } from '../../api/enroll-user'
 import { Navigate, useParams } from 'react-router-dom'
+import { useState } from 'react'
+import { ca, is } from 'date-fns/locale'
+import { AxiosError } from 'axios'
 
 
 
 export default function EnrollInPerkMembership() {
   const { organizationId } = useParams()
+  const [serverError, setServerError] = useState<string | null>(null)
   const { handleSubmit, control, formState: { errors } } = useForm<EnrollUserBody>()
 
 
   const onSubmit = async (data: EnrollUserBody) => {
-    const response = await postEnrollUser(organizationId!, data)
-
+    try {
+      const response = await postEnrollUser(organizationId!, data)
+      if (response.status === 200) {
+        // redirect to success page
+      }
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 402) {
+          setServerError('Email already exists')
+        }
+      }
+    }
   }
 
   // Redirect to 404 page if organizationId is not present
@@ -133,6 +147,11 @@ export default function EnrollInPerkMembership() {
                   />
                 )}
               />
+              {serverError && (
+                <Typography color='error' marginBottom='10px'>
+                  {serverError}
+                </Typography>
+              )}
               <Box display='flex' justifyContent='flex-end' marginTop='10px'>
                 <Button
                   sx={{ marginTop: '10px' }}

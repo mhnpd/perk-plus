@@ -1,3 +1,4 @@
+import { AxiosResponse } from "axios"
 import axiosInstance from "../shared/axios-config"
 
 export type EnrollUserBody = {
@@ -14,6 +15,6 @@ interface EnrollUserResponse {
 const endpoint = (orgId: string) => `/no-auth/v0/enroll/${orgId}`
 
 export const postEnrollUser = async (orgId: string, data: EnrollUserBody) => {
-  const response = await axiosInstance.post<EnrollUserResponse>(endpoint(orgId), data)
-  return response.data
+  const response = await axiosInstance.post<EnrollUserBody, AxiosResponse<EnrollUserResponse>>(endpoint(orgId), data)
+  return response
 }

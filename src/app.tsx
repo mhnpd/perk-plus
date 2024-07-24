@@ -6,6 +6,7 @@ import { Loading } from './components/loading'
 
 const DashboardLayout = lazy(() => import('./dasboard-layout'))
 const LoginPage = lazy(() => import('./pages/login/login'))
+const EnrollInPerkMembership = lazy(() => import('./pages/enroll-perk-membership'))
 
 const IndexPage = () => {
   return <h1>Dashboard</h1>
@@ -20,6 +21,14 @@ export default function App() {
         </Suspense>
       ),
       index: true
+    },
+    {
+      path: '/enroll/:organizationId',
+      element: (
+        <Suspense fallback={<Loading />}>
+          <EnrollInPerkMembership />
+        </Suspense>
+      ),
     },
     {
       path: 'app',

@@ -9,20 +9,23 @@ import { AppConfig } from '../../constants/config'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
+import { EnrollUserBody, postEnrollUser } from '../../api/enroll-user'
+import { Navigate, useParams } from 'react-router-dom'
 
-type EnrollmentFormData = {
-  firstName: string
-  lastName: string
-  email: string
-  phoneNumber: string
-}
+
 
 export default function EnrollInPerkMembership() {
-  const { handleSubmit, control } = useForm<EnrollmentFormData>()
+  const { organizationId } = useParams()
+  const { handleSubmit, control, formState: { errors } } = useForm<EnrollUserBody>()
 
-  const onSubmit = (data: EnrollmentFormData) => {
-    console.log(data)
+
+  const onSubmit = async (data: EnrollUserBody) => {
+    const response = await postEnrollUser(organizationId!, data)
+
   }
+
+  // Redirect to 404 page if organizationId is not present
+  if (!organizationId) return <Navigate to="not-found" />
 
   return (
     <>
@@ -42,6 +45,13 @@ export default function EnrollInPerkMembership() {
                 name="firstName"
                 control={control}
                 defaultValue=""
+                rules={{
+                  required: 'First Name is required',
+                  pattern: {
+                    value: /^[a-zA-Z ]*$/,
+                    message: 'Invalid first name'
+                  }
+                }}
                 render={({ field }) => (
                   <TextField
                     {...field}
@@ -49,6 +59,8 @@ export default function EnrollInPerkMembership() {
                     variant="outlined"
                     fullWidth
                     margin="normal"
+                    error={Boolean(errors.firstName)}
+                    helperText={errors.firstName?.message}
                   />
                 )}
               />
@@ -56,6 +68,13 @@ export default function EnrollInPerkMembership() {
                 name="lastName"
                 control={control}
                 defaultValue=""
+                rules={{
+                  required: 'Last Name is required',
+                  pattern: {
+                    value: /^[a-zA-Z ]*$/,
+                    message: 'Invalid last name'
+                  }
+                }}
                 render={({ field }) => (
                   <TextField
                     {...field}
@@ -63,6 +82,8 @@ export default function EnrollInPerkMembership() {
                     variant="outlined"
                     fullWidth
                     margin="normal"
+                    error={Boolean(errors.lastName)}
+                    helperText={errors.lastName?.message}
                   />
                 )}
               />
@@ -70,6 +91,13 @@ export default function EnrollInPerkMembership() {
                 name="email"
                 control={control}
                 defaultValue=""
+                rules={{
+                  required: 'Email is required',
+                  pattern: {
+                    value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+                    message: 'Invalid email address'
+                  }
+                }}
                 render={({ field }) => (
                   <TextField
                     {...field}
@@ -77,13 +105,22 @@ export default function EnrollInPerkMembership() {
                     variant="outlined"
                     fullWidth
                     margin="normal"
+                    error={Boolean(errors.email)}
+                    helperText={errors.email?.message}
                   />
                 )}
               />
               <Controller
-                name="phoneNumber"
+                name="phone"
                 control={control}
                 defaultValue=""
+                rules={{
+                  required: 'Phone Number is required',
+                  pattern: {
+                    value: /^[0-9]{10,}$/,
+                    message: 'Invalid phone number'
+                  }
+                }}
                 render={({ field }) => (
                   <TextField
                     {...field}
@@ -91,6 +128,8 @@ export default function EnrollInPerkMembership() {
                     variant="outlined"
                     fullWidth
                     margin="normal"
+                    error={Boolean(errors.phone)}
+                    helperText={errors.phone?.message}
                   />
                 )}
               />

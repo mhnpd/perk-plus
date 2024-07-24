@@ -1,8 +1,11 @@
 import './global.css'
-import { Suspense } from 'react'
+import { lazy, Suspense } from 'react'
 import { Navigate, Outlet, useRoutes } from 'react-router-dom'
-import DashboardLayout from './dasboard-layout'
-import LoginPage from './pages/login/login'
+import { NotFound } from './pages/not-found/not-found'
+import { Loading } from './components/loading'
+
+const DashboardLayout = lazy(() => import('./dasboard-layout'))
+const LoginPage = lazy(() => import('./pages/login/login'))
 
 const IndexPage = () => {
   return <h1>Dashboard</h1>
@@ -11,37 +14,38 @@ const IndexPage = () => {
 export default function App() {
   const routes = useRoutes([
     {
-      element: <LoginPage />,
-      index: true,
+      element: (
+        <Suspense fallback={<Loading />}>
+          <LoginPage />
+        </Suspense>
+      ),
+      index: true
     },
     {
       path: 'app',
       element: (
-        <DashboardLayout>
-          <Suspense>
+        <Suspense fallback={<Loading />}>
+          <DashboardLayout>
             <Outlet />
-          </Suspense>
-        </DashboardLayout>
+          </DashboardLayout>
+        </Suspense>
       ),
       children: [
-        { element: <IndexPage />, index: true },
+        { element: <IndexPage />, index: true }
         // { path: 'user', element: <UserPage /> },
         // { path: 'products', element: <ProductsPage /> },
         // { path: 'blog', element: <BlogPage /> },
-      ],
+      ]
     },
-    // {
-    //   path: '404',
-    //   element: <Page404 />,
-    // },
+    {
+      path: '404',
+      element: <NotFound />
+    },
     {
       path: '*',
-      element: <Navigate to="/404" replace />,
-    },
+      element: <Navigate to="/404" replace />
+    }
   ])
 
   return routes
 }
-
-
-

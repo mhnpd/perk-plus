@@ -7,6 +7,7 @@ declare module '@mui/material/styles' {
   interface Theme {
     customShadows: CustomShadowReturnType,
     typography: CustomTypography
+    palette: Palette
 
   }
   // Allow configuration using `createTheme`

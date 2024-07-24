@@ -1,5 +1,4 @@
-import { alpha, Theme } from '@mui/material/styles'
-
+import { alpha } from "@mui/material"
 
 export const grey = {
   0: '#FFFFFF',
@@ -118,4 +117,4 @@ export function palette() {
   }
 }
 
-export type Palette = Theme['palette'] & ReturnType<typeof palette>
+export type Palette = ReturnType<typeof palette>

@@ -1,5 +1,5 @@
 export const AppConfig = {
-  AppName: 'Loyalty App',
+  AppName: 'Perk Pulse',
 }
 
 export type AppConfigType = typeof AppConfig

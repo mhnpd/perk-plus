@@ -12,7 +12,6 @@ import Box from '@mui/material/Box'
 import { EnrollUserBody, postEnrollUser } from '../../api/enroll-user'
 import { Navigate, useParams } from 'react-router-dom'
 import { useState } from 'react'
-import { ca, is } from 'date-fns/locale'
 import { AxiosError } from 'axios'
 
 

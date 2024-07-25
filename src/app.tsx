@@ -9,10 +9,8 @@ import { ProfilePage } from './pages/accounts/profile'
 const DashboardLayout = lazy(() => import('./dasboard-layout'))
 const LoginPage = lazy(() => import('./pages/login/login'))
 const EnrollInPerkMembership = lazy(() => import('./pages/enroll-perk-membership'))
+const Home = lazy(() => import('./pages/home'))
 
-const IndexPage = () => {
-  return <h1>Dashboard</h1>
-}
 
 export default function App() {
   const routes = useRoutes([
@@ -44,7 +42,7 @@ export default function App() {
         </Suspense>
       ),
       children: [
-        { element: <IndexPage />, index: true },
+        { element: <Home />, index: true },
         { path: 'profile', element: <ProfilePage /> },
         // { path: 'products', element: <ProductsPage /> },
         // { path: 'blog', element: <BlogPage /> },

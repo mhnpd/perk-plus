@@ -12,7 +12,7 @@ interface EnrollUserResponse {
   message: string
 }
 
-const endpoint = (orgId: string) => `/no-auth/v0/enroll/${orgId}`
+const endpoint = (orgId: string) => `/no-auth/v0/enroll_user/${orgId}`
 
 export const postEnrollUser = async (orgId: string, data: EnrollUserBody) => {
   const response = await axiosInstance.post<EnrollUserBody, AxiosResponse<EnrollUserResponse>>(endpoint(orgId), data)

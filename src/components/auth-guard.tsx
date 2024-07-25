@@ -8,6 +8,7 @@ interface AuthGuardProps {
 
 const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
   const isAuthenticated = isUserLoggedIn()
+
   if (!isAuthenticated) {
     return <Navigate to="/" />
   }

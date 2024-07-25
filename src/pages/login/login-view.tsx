@@ -17,9 +17,12 @@ import { AppConfig } from '../../constants/config'
 import { useNavigate } from 'react-router-dom'
 import { AxiosError } from 'axios'
 import Collapse from '@mui/material/Collapse'
+import { useDispatch } from 'react-redux'
+import { setUserProfile } from '../../redux/slices/user-orgs'
 
 export function LoginView() {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const [showPassword, setShowPassword] = useState(false)
   const [serverError, setServerError] = useState<string | null>(null)
   const { handleSubmit, control, formState: { errors } } = useForm<UserLoginBody>()
@@ -28,6 +31,7 @@ export function LoginView() {
     try {
       const response = await postUserLogin(data)
       if (response.status === 200) {
+        dispatch(setUserProfile(response.data.user))
         navigate('/app')
       }
     } catch (error) {

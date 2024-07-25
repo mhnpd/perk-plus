@@ -4,6 +4,13 @@ import axiosInstance from '../shared/axios-config'
 
 const endpoint = '/no-auth/v0/login'
 
+export interface User {
+  userId: string
+  email: string
+  firstName: string
+  lastName: string
+}
+
 export interface UserLoginBody {
   email: string
   password: string
@@ -11,12 +18,7 @@ export interface UserLoginBody {
 
 export interface UserLoginResponse {
   sessionToken: string
-  user: {
-    userId: string
-    email: string
-    firstName: string
-    lastName: string
-  }
+  user: User
 }
 
 const cookiesConfiguration: Cookies.CookieAttributes = {

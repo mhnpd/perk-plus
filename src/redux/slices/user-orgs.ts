@@ -2,14 +2,17 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { RequestStatus } from "../types"
 import { getUserOrgs, UserOrgsResponse } from "../../api/check-org-exist"
+import { User } from "../../api/user-login"
 
-export interface UserOrgsState {
+export interface UserState {
   userOrgs: UserOrgsResponse[]
+  userProfile: User | null
   RequestStatus: RequestStatus
 }
 
-const initialState = {
+const initialState: UserState = {
   userOrgs: [],
+  userProfile: null,
   RequestStatus: RequestStatus.IDLE,
 }
 export const fetchUsersOrgsAsync: any = createAsyncThunk(
@@ -23,7 +26,11 @@ export const fetchUsersOrgsAsync: any = createAsyncThunk(
 const userOrgsSlice = createSlice({
   name: 'userOrgs',
   initialState,
-  reducers: {},
+  reducers: {
+    setUserProfile: (state, action) => {
+      state.userProfile = action.payload
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchUsersOrgsAsync.pending, (state) => {
@@ -39,5 +46,6 @@ const userOrgsSlice = createSlice({
   }
 })
 
+export const { setUserProfile } = userOrgsSlice.actions
 export const userOrgsSliceMountPoint = userOrgsSlice.name
 export const userOrgsReducer = userOrgsSlice.reducer

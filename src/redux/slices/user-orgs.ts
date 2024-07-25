@@ -29,10 +29,16 @@ export const fetchUsersOrgsAsync: any = createAsyncThunk(
 
 export const fetchUserProfile: any = createAsyncThunk(
   'userOrgs/getUserProfile',
-  async () => {
-    const response = await getUserProfile()
-    console.log(response.data)
-    return response.data
+  async (_, { getState }) => {
+    const state = getState() as RootState
+    const profile = state.userOrgs.userProfile
+    if (profile) {
+      return profile
+    } else {
+      const response = await getUserProfile()
+      console.log(response.data)
+      return response.data
+    }
   }
 )
 
@@ -69,7 +75,7 @@ const userOrgsSlice = createSlice({
   }
 })
 
-export const userSelector = createSelector(getOwnState, s => s.userProfile)
+export const selectUserProfile = createSelector(getOwnState, s => s.userProfile)
 
 export const { setUserProfile } = userOrgsSlice.actions
 export const userOrgsSliceMountPoint = userOrgsSlice.name

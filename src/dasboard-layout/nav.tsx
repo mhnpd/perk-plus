@@ -1,26 +1,23 @@
-import { useEffect, ReactNode } from 'react'
-
-import Box from '@mui/material/Box'
-import Stack from '@mui/material/Stack'
-import Drawer from '@mui/material/Drawer'
-import Button from '@mui/material/Button'
+import { ReactNode, useEffect } from 'react'
 import Avatar from '@mui/material/Avatar'
+import Box from '@mui/material/Box'
+import Drawer from '@mui/material/Drawer'
+import ListItemButton from '@mui/material/ListItemButton'
+import Stack from '@mui/material/Stack'
 import { alpha } from '@mui/material/styles'
 import Typography from '@mui/material/Typography'
-import ListItemButton from '@mui/material/ListItemButton'
 
 import { usePathname } from '../hooks/use-pathname'
 import { RouterLink } from '../shared/router-link'
-
 import { useResponsive } from '../hooks/use-responsive'
-
 import { account } from '../_mock_data/account'
-
 import { Logo } from '../components/logo'
 import { Scrollbar } from '../components/scrollbar'
-
 import { NAV } from './config-layout'
 import navConfig from './config-navigation'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchUserProfile, selectUserProfile } from '../redux/slices/user-orgs'
+import { getDisplayName } from '../shared/get-display-name'
 
 interface NavProps {
   openNav: boolean
@@ -35,11 +32,19 @@ interface NavItemProps {
   }
 }
 
-
 export default function Nav({ openNav, onCloseNav }: NavProps) {
   const pathname = usePathname()
+  const dispatch = useDispatch()
+  const user = useSelector(selectUserProfile)
 
   const upLg = useResponsive('up', 'lg')
+
+  // Fetch user profile
+  useEffect(() => {
+    if (!user) {
+      dispatch(fetchUserProfile())
+    }
+  }, [dispatch, user])
 
   useEffect(() => {
     if (openNav) {
@@ -58,13 +63,13 @@ export default function Nav({ openNav, onCloseNav }: NavProps) {
         display: 'flex',
         borderRadius: 1.5,
         alignItems: 'center',
-        bgcolor: (theme) => alpha(theme.palette.grey[500], 0.12),
+        bgcolor: (theme) => alpha(theme.palette.grey[500], 0.12)
       }}
     >
       <Avatar src={account.photoURL} alt="photoURL" />
 
       <Box sx={{ ml: 2 }}>
-        <Typography variant="subtitle2">{account.displayName}</Typography>
+        <Typography variant="subtitle2">{getDisplayName(user)}</Typography>
 
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
           {account.role}
@@ -81,35 +86,6 @@ export default function Nav({ openNav, onCloseNav }: NavProps) {
     </Stack>
   )
 
-  const renderUpgrade = (
-    <Box sx={{ px: 2.5, pb: 3, mt: 10 }}>
-      <Stack alignItems="center" spacing={3} sx={{ pt: 5, borderRadius: 2, position: 'relative' }}>
-        <Box
-          component="img"
-          src="/assets/illustrations/illustration_avatar.png"
-          sx={{ width: 100, position: 'absolute', top: -50 }}
-        />
-
-        <Box sx={{ textAlign: 'center' }}>
-          <Typography variant="h6">Get more?</Typography>
-
-          <Typography variant="body2" sx={{ color: 'text.secondary', mt: 1 }}>
-            From only $69
-          </Typography>
-        </Box>
-
-        <Button
-          href="https://material-ui.com/store/items/minimal-dashboard/"
-          target="_blank"
-          variant="contained"
-          color="inherit"
-        >
-          Upgrade to Pro
-        </Button>
-      </Stack>
-    </Box>
-  )
-
   const renderContent = (
     <Scrollbar
       sx={{
@@ -117,8 +93,8 @@ export default function Nav({ openNav, onCloseNav }: NavProps) {
         '& .simplebar-content': {
           height: 1,
           display: 'flex',
-          flexDirection: 'column',
-        },
+          flexDirection: 'column'
+        }
       }}
     >
       <Logo sx={{ mt: 3, ml: 4 }} />
@@ -129,7 +105,6 @@ export default function Nav({ openNav, onCloseNav }: NavProps) {
 
       <Box sx={{ flexGrow: 1 }} />
 
-      {renderUpgrade}
     </Scrollbar>
   )
 
@@ -137,7 +112,7 @@ export default function Nav({ openNav, onCloseNav }: NavProps) {
     <Box
       sx={{
         flexShrink: { lg: 0 },
-        width: { lg: NAV.WIDTH },
+        width: { lg: NAV.WIDTH }
       }}
     >
       {upLg ? (
@@ -146,7 +121,7 @@ export default function Nav({ openNav, onCloseNav }: NavProps) {
             height: 1,
             position: 'fixed',
             width: NAV.WIDTH,
-            borderRight: (theme) => `dashed 1px ${theme.palette.divider}`,
+            borderRight: (theme) => `dashed 1px ${theme.palette.divider}`
           }}
         >
           {renderContent}
@@ -157,8 +132,8 @@ export default function Nav({ openNav, onCloseNav }: NavProps) {
           onClose={onCloseNav}
           PaperProps={{
             sx: {
-              width: NAV.WIDTH,
-            },
+              width: NAV.WIDTH
+            }
           }}
         >
           {renderContent}
@@ -189,9 +164,9 @@ function NavItem({ item }: NavItemProps) {
           fontWeight: 'fontWeightSemiBold',
           bgcolor: (theme) => alpha(theme.palette.primary.main, 0.08),
           '&:hover': {
-            bgcolor: (theme) => alpha(theme.palette.primary.main, 0.16),
-          },
-        }),
+            bgcolor: (theme) => alpha(theme.palette.primary.main, 0.16)
+          }
+        })
       }}
     >
       <Box component="span" sx={{ width: 24, height: 24, mr: 2 }}>
@@ -202,5 +177,3 @@ function NavItem({ item }: NavItemProps) {
     </ListItemButton>
   )
 }
-
-

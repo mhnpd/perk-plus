@@ -1,9 +1,12 @@
-import { User } from "../api/user-login"
+import { User } from '../api/user-login'
+
+function capitalizeFirstLetter(string: string): string {
+  return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase()
+}
 
 export const getDisplayName = (user: User | null) => {
-  console.log(user)
-  if (user) {
-    return `${user.firstName} ${user.lastName}`
+  if (user && user.firstName && user.lastName) {
+    return `${capitalizeFirstLetter(user.firstName)} ${capitalizeFirstLetter(user.lastName)}`
   }
   return ''
 }

@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
 import { account } from '../_mock_data/account'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchUserProfile, userSelector } from '../redux/slices/user-orgs'
+import { fetchUserProfile, selectUserProfile } from '../redux/slices/user-orgs'
 import { getDisplayName } from '../shared/get-display-name'
 
 const MENU_OPTIONS = [
@@ -29,7 +29,7 @@ const MENU_OPTIONS = [
 
 export function AccountPopover() {
   const dispatch = useDispatch()
-  const user = useSelector(userSelector)
+  const user = useSelector(selectUserProfile)
   const [open, setOpen] = useState<HTMLElement | null>(null)
 
   const handleClose = () => {

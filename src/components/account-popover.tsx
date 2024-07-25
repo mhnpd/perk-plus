@@ -11,6 +11,8 @@ import { account } from '../_mock_data/account'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchUserProfile, selectUserProfile } from '../redux/slices/user-orgs'
 import { getDisplayName } from '../shared/get-display-name'
+import { removeAuthToken } from '../api/user-login'
+import { AppConfig } from '../constants/config'
 
 const MENU_OPTIONS = [
   {
@@ -33,7 +35,8 @@ export function AccountPopover() {
   const [open, setOpen] = useState<HTMLElement | null>(null)
 
   const handleClose = () => {
-    setOpen(null)
+    removeAuthToken()
+    window.location.href = AppConfig.LogoutRedirection
   }
 
   useEffect(() => {

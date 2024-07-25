@@ -10,23 +10,40 @@ import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
 import { EnrollUserBody, postEnrollUser } from '../../api/enroll-user'
-import { Navigate, useParams } from 'react-router-dom'
-import { useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import { useEffect, useState } from 'react'
 import { AxiosError } from 'axios'
+import { checkOrgExist } from '../../api/check-org-exist'
+import { Loading } from '../../components/loading'
 
 
 
 export default function EnrollInPerkMembership() {
   const { organizationId } = useParams()
+  const navigate = useNavigate()
+  const [loading, setLoading] = useState(true)
   const [serverError, setServerError] = useState<string | null>(null)
   const { handleSubmit, control, formState: { errors } } = useForm<EnrollUserBody>()
 
+  useEffect(() => {
+    checkOrgExist(organizationId!).then((response) => {
+      if (response.status === 200) {
+        setLoading(false)
+      }
+    }).catch((error) => {
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 404) {
+          navigate('/404')
+        }
+      }
+    })
+  }, [organizationId, navigate])
 
   const onSubmit = async (data: EnrollUserBody) => {
     try {
       const response = await postEnrollUser(organizationId!, data)
       if (response.status === 200) {
-        // redirect to success page
+        // Redirect to success page
       }
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -41,8 +58,11 @@ export default function EnrollInPerkMembership() {
     }
   }
 
+  // if organization id check is being done, show loading spinner
+  if (loading) return <Loading />
+
   // Redirect to 404 page if organizationId is not present
-  if (!organizationId) return <Navigate to="not-found" />
+  if (!organizationId) return
 
   return (
     <>

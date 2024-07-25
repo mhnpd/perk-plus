@@ -9,6 +9,7 @@ export interface User {
   email: string
   firstName: string
   lastName: string
+  role: string
 }
 
 export interface UserLoginBody {
@@ -58,5 +59,14 @@ export const postUserLogin = async (
     Cookies.set('sessionToken', response.data.sessionToken, cookiesConfiguration)
     Cookies.set('userId', response.data.user.userId, cookiesConfiguration)
   }
+  return response
+}
+
+export const getUserProfile = async () => {
+  const endpoint = '/v0/user/profile'
+  const response = await axiosInstance.get<
+    undefined,
+    AxiosResponse<User[]>
+  >(endpoint)
   return response
 }

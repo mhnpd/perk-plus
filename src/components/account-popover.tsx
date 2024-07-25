@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Box from '@mui/material/Box'
 import Avatar from '@mui/material/Avatar'
 import Divider from '@mui/material/Divider'
@@ -8,6 +8,9 @@ import MenuItem from '@mui/material/MenuItem'
 import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
 import { account } from '../_mock_data/account'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchUserProfile, userSelector } from '../redux/slices/user-orgs'
+import { getDisplayName } from '../shared/get-display-name'
 
 const MENU_OPTIONS = [
   {
@@ -25,11 +28,17 @@ const MENU_OPTIONS = [
 ]
 
 export function AccountPopover() {
+  const dispatch = useDispatch()
+  const user = useSelector(userSelector)
   const [open, setOpen] = useState<HTMLElement | null>(null)
 
   const handleClose = () => {
     setOpen(null)
   }
+
+  useEffect(() => {
+    if (!user) dispatch(fetchUserProfile())
+  })
 
   return (
     <>
@@ -49,14 +58,14 @@ export function AccountPopover() {
       >
         <Avatar
           src={account.photoURL}
-          alt={account.displayName}
+          alt={getDisplayName(user)}
           sx={{
             width: 36,
             height: 36,
             border: (theme) => `solid 2px ${theme.palette.background.default}`
           }}
         >
-          {account.displayName.charAt(0).toUpperCase()}
+          {getDisplayName(user).charAt(0)}
         </Avatar>
       </IconButton>
 
@@ -77,10 +86,10 @@ export function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2 }}>
           <Typography variant="subtitle2" noWrap>
-            {account.displayName}
+            {getDisplayName(user)}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            {account.email}
+            {user?.email}
           </Typography>
         </Box>
 

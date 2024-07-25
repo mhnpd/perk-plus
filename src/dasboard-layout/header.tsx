@@ -23,9 +23,7 @@ interface HeaderProps {
 
 export default function Header({ onOpenNav }: HeaderProps) {
   const theme = useTheme()
-
   const lgUp = useResponsive('up', 'lg')
-
   const renderContent = (
     <>
       {!lgUp && (

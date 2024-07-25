@@ -52,6 +52,7 @@ export const postUserLogin = async (
     AxiosResponse<UserLoginResponse>
   >(endpoint, data)
   if (response.status === 200) {
+    console.log(response.data)
     Cookies.set('sessionToken', response.data.sessionToken, cookiesConfiguration)
     Cookies.set('userId', response.data.user.userId, cookiesConfiguration)
   }

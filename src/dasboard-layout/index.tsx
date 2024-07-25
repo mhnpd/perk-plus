@@ -5,6 +5,7 @@ import Main from './main'
 import Header from './header'
 import { fetchUsersOrgsAsync } from '../redux/slices/user-orgs'
 import { useDispatch } from 'react-redux'
+import { isUserLoggedIn } from '../api/user-login'
 
 interface DashboardLayoutProps {
   children: ReactNode
@@ -15,7 +16,9 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(fetchUsersOrgsAsync())
+    if (isUserLoggedIn()) {
+      dispatch(fetchUsersOrgsAsync())
+    }
   }, [dispatch])
 
   return (

@@ -19,6 +19,12 @@ export interface UserLoginResponse {
   }
 }
 
+const cookiesConfiguration: Cookies.CookieAttributes = {
+  path: '/',
+  secure: true,
+  sameSite: 'strict',
+}
+
 export function getAuthToken() {
   return Cookies.get('sessionToken')
 }
@@ -36,6 +42,8 @@ export function getUserId() {
   return Cookies.get('userId')
 }
 
+
+
 export const postUserLogin = async (
   data: UserLoginBody
 ): Promise<AxiosResponse<UserLoginResponse>> => {
@@ -44,8 +52,8 @@ export const postUserLogin = async (
     AxiosResponse<UserLoginResponse>
   >(endpoint, data)
   if (response.status === 200) {
-    Cookies.set('sessionToken', response.data.sessionToken)
-    Cookies.set('userId', response.data.user.userId)
+    Cookies.set('sessionToken', response.data.sessionToken, cookiesConfiguration)
+    Cookies.set('userId', response.data.user.userId, cookiesConfiguration)
   }
   return response
 }

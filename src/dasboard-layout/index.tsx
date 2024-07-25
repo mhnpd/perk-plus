@@ -1,8 +1,10 @@
-import { useState, ReactNode } from 'react'
+import { useState, ReactNode, useEffect } from 'react'
 import Box from '@mui/material/Box'
 import Nav from './nav'
 import Main from './main'
 import Header from './header'
+import { fetchUsersOrgsAsync } from '../redux/slices/user-orgs'
+import { useDispatch } from 'react-redux'
 
 interface DashboardLayoutProps {
   children: ReactNode
@@ -10,6 +12,11 @@ interface DashboardLayoutProps {
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const [openNav, setOpenNav] = useState(false)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(fetchUsersOrgsAsync())
+  }, [dispatch])
 
   return (
     <>

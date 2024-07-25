@@ -32,7 +32,7 @@ export default function EnrollInPerkMembership() {
       if (error instanceof AxiosError) {
         console.log(error.response)
         if (error.response?.status === 402) {
-          setServerError('Email already exists')
+          setServerError(error.response.data)
         }
         if (error.response?.status === 404) {
           setServerError(error.response.data)

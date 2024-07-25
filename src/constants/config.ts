@@ -1,5 +1,5 @@
 export const AppConfig = {
-  AppName: 'Perk Pulse',
+  AppName: 'Relish Rewards',
   LogoutRedirection: '/',
 }
 

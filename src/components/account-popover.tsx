@@ -13,30 +13,43 @@ import { fetchUserProfile, selectUserProfile } from '../redux/slices/user-orgs'
 import { getDisplayName } from '../shared/get-display-name'
 import { removeAuthToken } from '../api/user-login'
 import { AppConfig } from '../constants/config'
+import { useNavigate } from 'react-router-dom'
 
 const MENU_OPTIONS = [
   {
     label: 'Home',
-    icon: 'eva:home-fill'
+    icon: 'eva:home-fill',
+    href: '/app',
   },
   {
     label: 'Profile',
+    href: '/app/profile',
     icon: 'eva:person-fill'
   },
   {
     label: 'Settings',
+    href: '/settings',
     icon: 'eva:settings-2-fill'
   }
 ]
 
 export function AccountPopover() {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const user = useSelector(selectUserProfile)
   const [open, setOpen] = useState<HTMLElement | null>(null)
 
   const handleClose = () => {
+    setOpen(null)
+  }
+
+  const handleLogout = () => {
     removeAuthToken()
-    window.location.href = AppConfig.LogoutRedirection
+    navigate(AppConfig.LogoutRedirection)
+  }
+
+  const handleRedirect = (href: string) => {
+    navigate(href)
   }
 
   useEffect(() => {
@@ -99,7 +112,7 @@ export function AccountPopover() {
         <Divider sx={{ borderStyle: 'dashed' }} />
 
         {MENU_OPTIONS.map((option) => (
-          <MenuItem key={option.label} onClick={handleClose}>
+          <MenuItem key={option.label} onClick={() => handleRedirect(option.href)}>
             {option.label}
           </MenuItem>
         ))}
@@ -109,7 +122,7 @@ export function AccountPopover() {
         <MenuItem
           disableRipple
           disableTouchRipple
-          onClick={handleClose}
+          onClick={handleLogout}
           sx={{ typography: 'body2', color: 'error.main', py: 1.5 }}
         >
           Logout

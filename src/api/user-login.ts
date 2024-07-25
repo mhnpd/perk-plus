@@ -19,6 +19,23 @@ export interface UserLoginResponse {
   }
 }
 
+export function getAuthToken() {
+  return Cookies.get('sessionToken')
+}
+
+export function removeAuthToken() {
+  Cookies.remove('sessionToken')
+  Cookies.remove('userId')
+}
+
+export function isUserLoggedIn() {
+  return Boolean(Cookies.get('sessionToken'))
+}
+
+export function getUserId() {
+  return Cookies.get('userId')
+}
+
 export const postUserLogin = async (
   data: UserLoginBody
 ): Promise<AxiosResponse<UserLoginResponse>> => {

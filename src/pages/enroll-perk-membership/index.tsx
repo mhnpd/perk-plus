@@ -1,19 +1,20 @@
-import { Helmet } from 'react-helmet-async'
-import Container from '@mui/material/Container'
-import Paper from '@mui/material/Paper'
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
 import Card from '@mui/material/Card'
+import Container from '@mui/material/Container'
+import Stack from '@mui/material/Stack'
+import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
-import { useForm, Controller } from 'react-hook-form'
+import { AxiosError } from 'axios'
+import { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet-async'
+import { Controller, useForm } from 'react-hook-form'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import { AppConfig } from '../../constants/config'
-import TextField from '@mui/material/TextField'
-import Button from '@mui/material/Button'
-import Box from '@mui/material/Box'
-import { EnrollUserBody, postEnrollUser } from '../../api/enroll-user'
-import { useNavigate, useParams } from 'react-router-dom'
-import { useEffect, useState } from 'react'
-import { AxiosError } from 'axios'
 import { checkOrgExist } from '../../api/check-org-exist'
+import { EnrollUserBody, postEnrollUser } from '../../api/enroll-user'
+import { Background } from '../../components/background'
 import { Loading } from '../../components/loading'
 
 
@@ -34,6 +35,7 @@ export default function EnrollInPerkMembership() {
       if (error instanceof AxiosError) {
         if (error.response?.status === 404) {
           navigate('/404')
+          // setLoading(false)
         }
       }
     })
@@ -65,12 +67,12 @@ export default function EnrollInPerkMembership() {
   if (!organizationId) return
 
   return (
-    <>
-      <Helmet>
-        <title>{`Enroll Perk Membership | ${AppConfig.AppName}`}</title>
-      </Helmet>
-      <Container maxWidth="sm" sx={{ marginTop: '100px' }}>
-        <Paper elevation={4}>
+    <Background>
+      <Stack alignItems="center" justifyContent="center" sx={{ height: 1 }}>
+        <Helmet>
+          <title>{`Enroll Perk Membership | ${AppConfig.AppName}`}</title>
+        </Helmet>
+        <Container maxWidth="sm">
           <Card sx={{ padding: '30px' }}>
             <Box marginBottom='10px'>
               <Typography textAlign="center" variant="h4">
@@ -187,8 +189,8 @@ export default function EnrollInPerkMembership() {
               </Box>
             </form>
           </Card>
-        </Paper>
-      </Container>
-    </>
+        </Container>
+      </Stack>
+    </Background >
   )
 }

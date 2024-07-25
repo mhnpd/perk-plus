@@ -1,102 +1,49 @@
-import { useState } from 'react'
+import LoadingButton from '@mui/lab/LoadingButton'
 import Box from '@mui/material/Box'
-import Link from '@mui/material/Link'
 import Card from '@mui/material/Card'
+import IconButton from '@mui/material/IconButton'
+import InputAdornment from '@mui/material/InputAdornment'
+import Link from '@mui/material/Link'
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
-import IconButton from '@mui/material/IconButton'
-import LoadingButton from '@mui/lab/LoadingButton'
-import { alpha, useTheme } from '@mui/material/styles'
-import InputAdornment from '@mui/material/InputAdornment'
+import { useState } from 'react'
 
-import { useRouter } from '../../hooks/use-router'
-
-import { bgGradient } from '../../theme/css'
-
-import { Logo } from '../../components/logo'
+import { Controller, useForm } from 'react-hook-form'
+import { postUserLogin, UserLoginBody } from '../../api/user-login'
+import { Background } from '../../components/background'
 import { Iconify } from '../../components/iconify'
 import { AppConfig } from '../../constants/config'
+import { useNavigate } from 'react-router-dom'
+import { AxiosError } from 'axios'
+import Collapse from '@mui/material/Collapse'
 
 export function LoginView() {
-  const theme = useTheme()
-
-  const router = useRouter()
-
+  const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false)
+  const [serverError, setServerError] = useState<string | null>(null)
+  const { handleSubmit, control, formState: { errors } } = useForm<UserLoginBody>()
 
-  const handleClick = () => {
-    router.push('/dashboard')
+  const onFormSubmit = async (data: UserLoginBody) => {
+    try {
+      const response = await postUserLogin(data)
+      if (response.status === 200) {
+        navigate('/app')
+      }
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 401) {
+          setServerError('Invalid email or password')
+        }
+        if (error.response?.status === 403) {
+          setServerError('Please check you email for verification link')
+        }
+      }
+    }
   }
 
-  const renderForm = (
-    <>
-      <Stack spacing={3}>
-        <TextField name="email" label="Email address" />
-
-        <TextField
-          name="password"
-          label="Password"
-          type={showPassword ? 'text' : 'password'}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  onClick={() => setShowPassword(!showPassword)}
-                  edge="end"
-                >
-                  <Iconify
-                    icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'}
-                  />
-                </IconButton>
-              </InputAdornment>
-            )
-          }}
-        />
-      </Stack>
-
-      <Stack
-        direction="row"
-        alignItems="center"
-        justifyContent="flex-end"
-        sx={{ my: 3 }}
-      >
-        <Link variant="subtitle2" underline="hover">
-          Forgot password?
-        </Link>
-      </Stack>
-
-      <LoadingButton
-        fullWidth
-        size="large"
-        type="submit"
-        variant="contained"
-        color="inherit"
-        onClick={handleClick}
-      >
-        Login
-      </LoadingButton>
-    </>
-  )
-
   return (
-    <Box
-      sx={{
-        ...bgGradient({
-          color: alpha(theme.palette.background.default, 0.9),
-          imgUrl: '/assets/background/overlay_4.jpg'
-        }),
-        height: 1
-      }}
-    >
-      <Logo
-        sx={{
-          position: 'fixed',
-          top: { xs: 16, md: 24 },
-          left: { xs: 16, md: 24 }
-        }}
-      />
-
+    <Background disabledLogo={false}>
       <Stack alignItems="center" justifyContent="center" sx={{ height: 1 }}>
         <Card
           sx={{
@@ -108,9 +55,99 @@ export function LoginView() {
           <Box mb={5}>
             <Typography variant="h4">{`Sign in to ${AppConfig.AppName}`}</Typography>
           </Box>
-          {renderForm}
+          <Stack spacing={3}>
+            <form onSubmit={handleSubmit(onFormSubmit)}>
+              <Controller
+                name="email"
+                control={control}
+                defaultValue=""
+                rules={{
+                  required: 'Email is required',
+                  pattern: {
+                    value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                    message: 'Invalid email address'
+                  }
+                }}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    label="Email address"
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    error={Boolean(errors.email)}
+                    helperText={errors.email?.message}
+                  />
+                )}
+              />
+              <Controller
+                name="password"
+                control={control}
+                defaultValue=""
+                rules={{
+                  required: 'Password is required'
+                }}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    label="Password"
+                    type={showPassword ? 'text' : 'password'}
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    error={Boolean(errors.password)}
+                    helperText={errors.password?.message}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            onClick={() => setShowPassword(!showPassword)}
+                            edge="end"
+                          >
+                            <Iconify
+                              icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'}
+                            />
+                          </IconButton>
+                        </InputAdornment>
+                      )
+                    }}
+                  />
+                )}
+              />
+              <Collapse in={!!serverError}>
+                <Box display='flex' justifyContent='center' >
+                  {serverError && (
+                    <Typography color="error" marginBottom="10px">
+                      {serverError}
+                    </Typography>
+                  )}
+                </Box>
+              </Collapse>
+              <Stack
+                direction="row"
+                alignItems="center"
+                justifyContent="flex-end"
+                sx={{ my: 3 }}
+              >
+                <Link variant="subtitle2" underline="hover">
+                  Forgot password?
+                </Link>
+              </Stack>
+
+              <LoadingButton
+                fullWidth
+                size="large"
+                type="submit"
+                variant="contained"
+                color="inherit"
+              >
+                Login
+              </LoadingButton>
+            </form>
+          </Stack>
         </Card>
       </Stack>
-    </Box >
+    </Background>
   )
 }
+

@@ -2,12 +2,13 @@
 import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit"
 import { RequestStatus } from "../types"
 import type { RootState } from "../store"
-import { getPerkCard, PerkCardResponse } from "../../api/get-perk-card"
+import { Card, getCards } from "../../api/card"
+
 
 const getOwnState = (state: RootState) => state.cards
 
 export interface UserState {
-  cards: PerkCardResponse[],
+  cards: Card[]
   requestStatus: RequestStatus
 }
 
@@ -16,24 +17,24 @@ const initialState: UserState = {
   cards: [],
   requestStatus: RequestStatus.IDLE,
 }
-export const fetchPerkCard: any = createAsyncThunk(
+export const fetchCard: any = createAsyncThunk(
   'userOrgs/getUsersOrgs',
-  async (orgId: string) => {
-    const response = await getPerkCard(orgId)
-    return response.data
+  async () => {
+    const response = await getCards()
+    return response
   }
 )
 
-const cardsSlice = createSlice({
+export const cardsSlice = createSlice({
   name: 'cards',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchPerkCard.pending, (state) => {
+      .addCase(fetchCard.pending, (state) => {
         state.requestStatus = RequestStatus.PENDING
       })
-      .addCase(fetchPerkCard.fulfilled, (state, action) => {
+      .addCase(fetchCard.fulfilled, (state, action) => {
         state.requestStatus = RequestStatus.FULFILLED
         state.cards = action.payload
       })
@@ -42,5 +43,4 @@ const cardsSlice = createSlice({
 
 export const selectAllCards = createSelector(getOwnState, s => s.cards)
 
-export const cardsSliceMountPoint = cardsSlice.name
-export const cardsReducer = cardsSlice.reducer
+

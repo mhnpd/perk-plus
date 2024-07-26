@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk, PayloadAction, createSelector } from '@reduxjs/toolkit'
 import {
   getOrganizationAdmins,
   getOrganizationMembers,
@@ -139,16 +139,25 @@ export const orgSlice = createSlice({
 
 
 // Selectors
-export const selectUsersOrganization = (state: RootState) =>
-  state.orgs.usersOrganization
+const selectOrgsState = (state: RootState) => state.orgs
 
-export const selectUsersInOrganization = (state: RootState) =>
-  state.orgs.usersInOrganization
+export const selectUsersOrganization = createSelector(
+  [selectOrgsState],
+  (orgs) => orgs.usersOrganization
+)
 
-export const selectOrganizationMembers = (state: RootState) =>
-  state.orgs.organizationMembers
+export const selectUsersInOrganization = createSelector(
+  [selectOrgsState],
+  (orgs) => orgs.usersInOrganization
+)
 
-export const selectOrganizationAdmins = (state: RootState) =>
-  state.orgs.organizationAdmins
+export const selectOrganizationMembers = createSelector(
+  [selectOrgsState],
+  (orgs) => orgs.organizationMembers
+)
 
+export const selectOrganizationAdmins = createSelector(
+  [selectOrgsState],
+  (orgs) => orgs.organizationAdmins
+);
 

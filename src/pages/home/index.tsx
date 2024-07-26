@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchPerkCard, selectAllCards } from '../../redux/slices/cards'
+import { fetchCard, selectAllCards } from '../../redux/slices/cards'
 import { Helmet } from 'react-helmet-async'
 import { AppConfig } from '../../constants/config'
 import Container from '@mui/material/Container'
@@ -12,7 +12,7 @@ export default function Home() {
   const cards = useSelector(selectAllCards)
 
   useEffect(() => {
-    dispatch(fetchPerkCard('1234'))
+    dispatch(fetchCard('1234'))
   }, [dispatch])
 
   return (

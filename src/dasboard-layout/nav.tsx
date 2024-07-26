@@ -16,7 +16,7 @@ import { Scrollbar } from '../components/scrollbar'
 import { NAV } from './config-layout'
 import navConfig from './config-navigation'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchUserProfile, selectUserProfile } from '../redux/slices/user-orgs'
+import { fetchUserProfile, selectUserProfile } from '../redux/slices/user'
 import { getDisplayName } from '../shared/get-display-name'
 
 interface NavProps {

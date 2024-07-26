@@ -3,7 +3,7 @@ import Box from '@mui/material/Box'
 import Nav from './nav'
 import Main from './main'
 import Header from './header'
-import { fetchUsersOrgsAsync } from '../redux/slices/user-orgs'
+import { fetchUsersOrgsAsync } from '../redux/slices/user'
 import { useDispatch } from 'react-redux'
 import { isUserLoggedIn } from '../api/user-login'
 

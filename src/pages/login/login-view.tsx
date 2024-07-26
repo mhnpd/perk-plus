@@ -18,7 +18,7 @@ import { useNavigate } from 'react-router-dom'
 import { AxiosError } from 'axios'
 import Collapse from '@mui/material/Collapse'
 import { useDispatch } from 'react-redux'
-import { setUserProfile } from '../../redux/slices/user-orgs'
+import { setUserProfile } from '../../redux/slices/user'
 
 export function LoginView() {
   const navigate = useNavigate()

@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async'
 import { AppConfig } from '../../constants/config'
 import { useSelector } from 'react-redux'
-import { selectUserProfile } from '../../redux/slices/user-orgs'
+import { selectUserProfile } from '../../redux/slices/user'
 import Typography from '@mui/material/Typography'
 import { getDisplayName } from '../../shared/get-display-name'
 import Container from '@mui/material/Container'

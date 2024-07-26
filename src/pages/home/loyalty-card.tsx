@@ -66,7 +66,7 @@ const LoyaltyCard: React.FC = () => {
             </Grid>
             <Grid item xs={8} sx={{ display: 'flex', alignItems: 'center' }}>
               <Typography color="white" variant="h6" component="div">
-                Google I/O '22
+                Google I/O 22
               </Typography>
             </Grid>
           </Grid>

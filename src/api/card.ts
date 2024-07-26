@@ -14,9 +14,16 @@ export interface Card {
 interface CardPoint { points: number }
 
 export const CardRoutes = {
+  GetCards: '/card',
   GetCardById: '/card/:cardId',
   AddCardPoint: '/card/:cardId/point',
   RedeemCardPoint: '/card/:cardId/redeem'
+}
+
+// Get all cards for a user
+export const getCards = async (): Promise<Card[]> => {
+  const response = await axiosInstance.get<Card[]>(CardRoutes.GetCards)
+  return response.data
 }
 
 // Get card by card id

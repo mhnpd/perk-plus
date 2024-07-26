@@ -1,9 +1,7 @@
 import { combineReducers } from "@reduxjs/toolkit"
-import { userOrgsReducer, userOrgsSliceMountPoint } from "./slices/user-orgs"
-import { cardsReducer, cardsSliceMountPoint } from './slices/cards'
+import { orgSlice } from "./slices/orgs"
 
 export const rootReducer = combineReducers({
-  [userOrgsSliceMountPoint]: userOrgsReducer,
-  [cardsSliceMountPoint]: cardsReducer
+  [orgSlice.name]: orgSlice.reducer,
   // Add your reducers here
 })

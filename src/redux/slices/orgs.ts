@@ -8,9 +8,9 @@ import {
   Organization
 } from '../../api/orgs'
 import { User } from '../../api/user'
+import type { RootState } from '../store'
 
-// Define the state type
-interface OrgState {
+export interface OrgState {
   usersOrganization: Organization[]
   usersInOrganization: User[]
   organizationMembers: User[]
@@ -60,8 +60,10 @@ export const fetchOrganizationAdmins: any = createAsyncThunk<User[], string>(
     return admins
   }
 )
+
+
 // Create the slice
-const orgSlice = createSlice({
+export const orgSlice = createSlice({
   name: 'orgs',
   initialState,
   reducers: {},
@@ -134,4 +136,19 @@ const orgSlice = createSlice({
   }
 })
 
-export default orgSlice.reducer
+
+
+// Selectors
+export const selectUsersOrganization = (state: RootState) =>
+  state.orgs.usersOrganization
+
+export const selectUsersInOrganization = (state: RootState) =>
+  state.orgs.usersInOrganization
+
+export const selectOrganizationMembers = (state: RootState) =>
+  state.orgs.organizationMembers
+
+export const selectOrganizationAdmins = (state: RootState) =>
+  state.orgs.organizationAdmins
+
+

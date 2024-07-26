@@ -2,7 +2,7 @@ import { AxiosResponse } from 'axios'
 import axiosInstance from '../shared/axios-config'
 import { User } from './user'
 
-interface Organization {
+export interface Organization {
   organizationId: string
   name: string
   email?: string

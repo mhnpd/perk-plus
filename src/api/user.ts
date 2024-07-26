@@ -1,14 +1,14 @@
 import { AxiosResponse } from 'axios'
 import axiosInstance from '../shared/axios-config'
 
-interface User {
+export interface User {
   userId: number
   firstName: string
   lastName: string
   email: string
-  phone: string
-  locale: string
-  profileImage: string
+  phone?: string
+  locale?: string
+  profileImage?: string
   role: string
 }
 

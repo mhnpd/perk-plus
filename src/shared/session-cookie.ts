@@ -13,6 +13,11 @@ export const setSessionCookie = (sessionToken: string, userId: string) => {
   Cookies.set('userId', userId, options)
 }
 
+export const getAuthToken = () => {
+  const sessionToken = Cookies.get('sessionToken')
+  return sessionToken ? `Bearer ${sessionToken}` : ''
+}
+
 export const getSessionCookie = () => {
   const sessionToken = Cookies.get('sessionToken')
   const userId = Cookies.get('userId')

@@ -1,12 +1,12 @@
 import axios from 'axios'
-import { getAuthToken } from '../api/user-login'
+import { getAuthToken } from './session-cookie'
 
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_UPSTREAM_API_URL,
   withCredentials: true, // Include cookies in requests
   headers: {
     'Content-Type': 'application/json',
-    'Authorization': `Bearer ${getAuthToken()}`,
+    'Authorization': getAuthToken(),
     // Add any other default headers here
   },
 })

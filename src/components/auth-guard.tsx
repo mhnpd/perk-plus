@@ -1,6 +1,6 @@
 import React from 'react'
 import { Navigate } from 'react-router-dom'
-import { isUserLoggedIn } from '../api/user-login'
+import { isUserLoggedIn } from '../shared/session-cookie'
 
 interface AuthGuardProps {
   children: React.ReactNode

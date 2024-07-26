@@ -1,4 +1,5 @@
 import Cookies from 'js-cookie'
+import { jwtDecode, JwtPayload } from 'jwt-decode'
 
 export const setSessionCookie = (sessionToken: string, userId: string) => {
   const options = {
@@ -21,4 +22,24 @@ export const getSessionCookie = () => {
 export const removeSessionCookie = () => {
   Cookies.remove('sessionToken', { path: '/', domain: window.location.hostname })
   Cookies.remove('userId', { path: '/', domain: window.location.hostname })
+}
+
+export const isUserLoggedIn = () => {
+  const sessionToken = Cookies.get('sessionToken')
+  if (!sessionToken) {
+    return false
+  }
+
+  try {
+    const decodedToken = jwtDecode<JwtPayload>(sessionToken)
+    const currentTime = Date.now() / 1000
+
+    if (decodedToken.exp && decodedToken.exp < currentTime) {
+      return false
+    }
+
+    return true
+  } catch (error) {
+    return false
+  }
 }

@@ -1,5 +1,6 @@
 import { AxiosResponse } from 'axios'
 import axiosInstance from '../shared/axios-config'
+import { setSessionCookie } from '../shared/session-cookie'
 
 export interface User {
   userId: number
@@ -21,14 +22,27 @@ export enum UserRoutes {
   MakeAdmin = '/v0/users/make-super-admin'
 }
 
+export interface LoginResponse {
+  token: string
+  user: {
+    id: string
+    email: string
+    name: string
+    // Add other user properties as needed
+  }
+}
+
 export const postUserLogin = async (
   email: string,
   password: string
-): Promise<User> => {
-  const response: AxiosResponse<User> = await axiosInstance.post(
+): Promise<LoginResponse> => {
+  const response: AxiosResponse<LoginResponse> = await axiosInstance.post(
     UserRoutes.Login,
     { email, password }
   )
+  if (response.status === 200) {
+    setSessionCookie(response.data.token, response.data.user.id)
+  }
   return response.data
 }
 

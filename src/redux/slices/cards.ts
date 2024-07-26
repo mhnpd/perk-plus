@@ -40,7 +40,7 @@ const cardsSlice = createSlice({
   }
 })
 
-export const selectUserProfile = createSelector(getOwnState, s => s.cards)
+export const selectAllCards = createSelector(getOwnState, s => s.cards)
 
 export const cardsSliceMountPoint = cardsSlice.name
 export const cardsReducer = cardsSlice.reducer

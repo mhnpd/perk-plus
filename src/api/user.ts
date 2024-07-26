@@ -3,7 +3,7 @@ import axiosInstance from '../shared/axios-config'
 import { setSessionCookie } from '../shared/session-cookie'
 
 export interface User {
-  userId: number
+  userId: string
   firstName: string
   lastName: string
   email: string
@@ -15,6 +15,7 @@ export interface User {
 
 export enum UserRoutes {
   Login = 'no_auth/v0/users/login',
+  user = '/v0/users/profile',
   Register = '/v0/users/register/:orgId',
   ChangePassword = '/v0/users/change-password',
   ChangeUserPassword = '/v0/users/change-user-password',
@@ -24,26 +25,26 @@ export enum UserRoutes {
 
 export interface LoginResponse {
   token: string
-  user: {
-    id: string
-    email: string
-    name: string
-    // Add other user properties as needed
-  }
+  user: User
 }
 
-export const postUserLogin = async (
-  email: string,
+export interface UserLoginBody {
+  email: string
   password: string
-): Promise<LoginResponse> => {
+}
+
+export const postUserLogin = async ({
+  email,
+  password
+}: UserLoginBody): Promise<AxiosResponse<LoginResponse>> => {
   const response: AxiosResponse<LoginResponse> = await axiosInstance.post(
     UserRoutes.Login,
     { email, password }
   )
   if (response.status === 200) {
-    setSessionCookie(response.data.token, response.data.user.id)
+    setSessionCookie(response.data.token, response.data.user.userId)
   }
-  return response.data
+  return response
 }
 
 export interface UserResigerPostBody {
@@ -53,6 +54,7 @@ export interface UserResigerPostBody {
   lastName: string
   phone?: string
 }
+
 export const postUserRegister = async ({
   orgId,
   ...rest
@@ -104,5 +106,10 @@ export const postUserMakeAdmin = async (userId: number): Promise<User> => {
     UserRoutes.MakeAdmin,
     { userId }
   )
+  return response.data
+}
+
+export const getUserProfile = async (): Promise<User> => {
+  const response: AxiosResponse<User> = await axiosInstance.get(UserRoutes.user)
   return response.data
 }

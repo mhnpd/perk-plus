@@ -3,9 +3,9 @@ import Box from '@mui/material/Box'
 import Nav from './nav'
 import Main from './main'
 import Header from './header'
-import { fetchUsersOrgsAsync } from '../redux/slices/user'
 import { useDispatch } from 'react-redux'
-import { isUserLoggedIn } from '../api/user-login'
+import { isUserLoggedIn } from '../shared/session-cookie'
+import { fetchOrganizations } from '../redux/slices/orgs'
 
 interface DashboardLayoutProps {
   children: ReactNode
@@ -17,7 +17,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
   useEffect(() => {
     if (isUserLoggedIn()) {
-      dispatch(fetchUsersOrgsAsync())
+      dispatch(fetchOrganizations())
     }
   }, [dispatch])
 

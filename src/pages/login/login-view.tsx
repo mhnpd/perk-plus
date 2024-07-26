@@ -10,7 +10,6 @@ import Typography from '@mui/material/Typography'
 import { useState } from 'react'
 
 import { Controller, useForm } from 'react-hook-form'
-import { postUserLogin, UserLoginBody } from '../../api/user-login'
 import { Background } from '../../components/background'
 import { Iconify } from '../../components/iconify'
 import { AppConfig } from '../../constants/config'
@@ -18,7 +17,8 @@ import { useNavigate } from 'react-router-dom'
 import { AxiosError } from 'axios'
 import Collapse from '@mui/material/Collapse'
 import { useDispatch } from 'react-redux'
-import { setUserProfile } from '../../redux/slices/user'
+import { postUserLogin, UserLoginBody } from '../../api/user'
+import { updateUserProfile } from '../../redux/slices/user'
 
 export function LoginView() {
   const navigate = useNavigate()
@@ -31,7 +31,7 @@ export function LoginView() {
     try {
       const response = await postUserLogin(data)
       if (response.status === 200) {
-        dispatch(setUserProfile(response.data.user))
+        dispatch(updateUserProfile(response.data.user))
         navigate('/app')
       }
     } catch (error) {

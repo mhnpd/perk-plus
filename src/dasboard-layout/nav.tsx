@@ -15,8 +15,8 @@ import { Logo } from '../components/logo'
 import { Scrollbar } from '../components/scrollbar'
 import { NAV } from './config-layout'
 import navConfig from './config-navigation'
-import { useDispatch, useSelector } from 'react-redux'
-import { fetchUserProfile, selectUserProfile } from '../redux/slices/user'
+import { useSelector } from 'react-redux'
+import { selectProfile } from '../redux/slices/user'
 import { getDisplayName } from '../shared/get-display-name'
 
 interface NavProps {
@@ -34,17 +34,8 @@ interface NavItemProps {
 
 export default function Nav({ openNav, onCloseNav }: NavProps) {
   const pathname = usePathname()
-  const dispatch = useDispatch()
-  const user = useSelector(selectUserProfile)
-
+  const user = useSelector(selectProfile)
   const upLg = useResponsive('up', 'lg')
-
-  // Fetch user profile
-  useEffect(() => {
-    if (!user) {
-      dispatch(fetchUserProfile())
-    }
-  }, [dispatch, user])
 
   useEffect(() => {
     if (openNav) {

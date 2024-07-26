@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Box from '@mui/material/Box'
 import Avatar from '@mui/material/Avatar'
 import Divider from '@mui/material/Divider'
@@ -8,12 +8,10 @@ import MenuItem from '@mui/material/MenuItem'
 import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
 import { account } from '../_mock_data/account'
-import { useDispatch, useSelector } from 'react-redux'
-import { fetchUserProfile, selectUserProfile } from '../redux/slices/user'
 import { getDisplayName } from '../shared/get-display-name'
-import { removeAuthToken } from '../api/user-login'
 import { AppConfig } from '../constants/config'
 import { useNavigate } from 'react-router-dom'
+import { removeSessionCookie } from '../shared/session-cookie'
 
 const MENU_OPTIONS = [
   {
@@ -34,27 +32,27 @@ const MENU_OPTIONS = [
 ]
 
 export function AccountPopover() {
-  const dispatch = useDispatch()
   const navigate = useNavigate()
-  const user = useSelector(selectUserProfile)
   const [open, setOpen] = useState<HTMLElement | null>(null)
+  const user = {
+    firstName: 'John',
+    lastName: 'Doe',
+    email: 'r ...@gmail.com',
+    photoURL: ''
+  }
 
   const handleClose = () => {
     setOpen(null)
   }
 
   const handleLogout = () => {
-    removeAuthToken()
+    removeSessionCookie()
     navigate(AppConfig.LogoutRedirection)
   }
 
   const handleRedirect = (href: string) => {
     navigate(href)
   }
-
-  useEffect(() => {
-    if (!user) dispatch(fetchUserProfile())
-  })
 
   return (
     <>

@@ -1,16 +1,16 @@
 import { Helmet } from 'react-helmet-async'
 import { AppConfig } from '../../constants/config'
 import { useSelector } from 'react-redux'
-import { selectUserProfile } from '../../redux/slices/user'
 import Typography from '@mui/material/Typography'
 import { getDisplayName } from '../../shared/get-display-name'
 import Container from '@mui/material/Container'
 import Box from '@mui/material/Box'
 import Paper from '@mui/material/Paper'
 import Avatar from '@mui/material/Avatar'
+import { selectProfile } from '../../redux/slices/user'
 
 function ProfilePage() {
-  const user = useSelector(selectUserProfile)
+  const user = useSelector(selectProfile)
   return (
     <>
       <Helmet>

@@ -7,17 +7,19 @@ import {
   TableRow,
   Paper,
   Avatar,
-  Typography
+  Typography,
+  Button
 } from '@mui/material'
 import { useSelector } from 'react-redux'
 import { selectUsersOrganization } from '../../../redux/slices/orgs'
 
 const OrganizationTable = () => {
   const orgList = useSelector(selectUsersOrganization)
+  console.log(orgList)
   return (
-    <TableContainer component={Paper} elevation={4} sx={{ mt: 5, p: 2 }}>
-      <Typography variant="h6" marginBottom={2}>
-        Add Organization
+    <TableContainer component={Paper} elevation={4} sx={{ pt: 3, mt: 5 }}>
+      <Typography variant="h6" marginBottom={2} sx={{ pl: 2 }}>
+        All Organizations
       </Typography>
       <Table>
         <TableHead>
@@ -36,7 +38,9 @@ const OrganizationTable = () => {
               <TableCell> {org.email} </TableCell>
               <TableCell> {org.phone} </TableCell>
               <TableCell>
-                <img src={org.banner} alt="banner" width={150} />
+                <Button component="a" target='_blank' href={org.banner}>
+                  View
+                </Button>
               </TableCell>
               <TableCell>
                 <Avatar src={org.logo} alt="logo" />

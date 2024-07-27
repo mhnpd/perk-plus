@@ -28,10 +28,14 @@ export default function OrgHome(): React.ReactElement {
         <Button
           variant="contained"
           color="inherit"
-          startIcon={<Iconify icon="eva:plus-fill" />}
+          startIcon={
+            <Iconify
+              icon={showAddOrgModal ? 'eva:eye-off-2-fill' : 'eva:plus-fill'}
+            />
+          }
           onClick={() => setShowAddOrgModal(!showAddOrgModal)}
         >
-          {showAddOrgModal ? 'Hide form' : 'Add new organization'}
+          {showAddOrgModal ? 'Hide' : 'Add new organization'}
         </Button>
       </Stack>
       <Collapse in={showAddOrgModal} timeout={500}>

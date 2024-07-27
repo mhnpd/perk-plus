@@ -7,6 +7,15 @@ import Typography from '@mui/material/Typography'
 import Grid from '@mui/material/Grid'
 import Stack from '@mui/material/Stack'
 import Card from '@mui/material/Card'
+import TimelineComponent from './childs/timeline'
+import { Divider } from '@mui/material'
+import UserProfile from './childs/profile'
+const data = {
+  organizationName: 'Tech Innovators',
+  userName: 'John Doe',
+  totalPoints: 1200,
+  userLevel: 'Gold',
+}
 
 export default function Home() {
 
@@ -19,32 +28,24 @@ export default function Home() {
         <Typography variant="h4" sx={{ mb: 5 }}>
           Hi, Welcome back 👋
         </Typography>
-        <Card
-          component={Stack}
-          spacing={3}
-          direction="row"
-          sx={{
-            px: 3,
-            py: 5,
-            borderRadius: 2,
-          }}
-        >
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={8}>
-              <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                <img
-                  src="https://source.unsplash.com/animal"
-                  alt="random"
-                  style={{ width: '100%', height: '100%' }}
-                />
-              </Box>
-            </Grid>
+        <Card component={Stack} direction="row" sx={{ px: 3, py: 5, borderRadius: 2 }}>
+          <Grid container>
             <Grid item xs={12} md={4}>
-              <LoyaltyCard />
+              <UserProfile />
+            </Grid>
+            <Divider orientation="vertical" flexItem sx={{ ml: 3, mr: 3 }} />
+            <Grid item xs={12} md={4}>
+              <TimelineComponent />
+            </Grid>
+            <Divider orientation="vertical" flexItem sx={{ ml: 3 }} />
+            <Grid item xs={12} md={3} sx={{ alignSelf: 'flex-end' }}>
+              <Box sx={{ pl: 4 }}>
+                <LoyaltyCard />
+              </Box>
             </Grid>
           </Grid>
         </Card>
-      </Container>
+      </Container >
     </>
   )
 }

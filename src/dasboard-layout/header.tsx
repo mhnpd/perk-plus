@@ -15,6 +15,7 @@ import { NAV, HEADER } from './config-layout'
 import { AccountPopover } from '../components/account-popover'
 import { LanguagePopover } from '../components/language-popover'
 import NotificationsPopover from '../components/notifications-popover'
+import TeamMenu from '../components/current-org-dropdown'
 
 
 interface HeaderProps {
@@ -33,6 +34,7 @@ export default function Header({ onOpenNav }: HeaderProps) {
       )}
 
       <Searchbar />
+      <TeamMenu />
 
       <Box sx={{ flexGrow: 1 }} />
 

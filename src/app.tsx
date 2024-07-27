@@ -6,6 +6,7 @@ import { Loading } from './components/loading'
 import AuthGuard from './components/auth-guard'
 import { ProfilePage } from './pages/accounts/profile'
 import OrganizationHome from './pages/organization/org-home'
+import UserPage from './pages/user-lists/list'
 
 const DashboardLayout = lazy(() => import('./dasboard-layout'))
 const LoginPage = lazy(() => import('./pages/login/login'))
@@ -47,7 +48,7 @@ export default function App() {
         { element: <Home />, index: true },
         { path: 'profile', element: <ProfilePage /> },
         { path: '/app/add-organization', element: <OrganizationHome /> },
-        // { path: 'blog', element: <BlogPage /> },
+        { path: '/app/users', element: <UserPage /> },
       ]
     },
     {

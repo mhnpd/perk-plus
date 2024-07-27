@@ -13,7 +13,7 @@ import GoogleIcon from '@mui/icons-material/Google'
 import barcodeImage from './qrcode.png'
 
 const CardWrapper = styled(Card)(() => ({
-  maxWidth: '290px',
+  maxWidth: '260px',
   overflow: 'hidden',
   backgroundColor: '#4285F4'
 }))
@@ -80,7 +80,7 @@ const LoyaltyCard: React.FC = () => {
             Alex McJacobs
           </Typography>
         </Box>
-        <Box sx={{ mt: 2, pl: 2 }}>
+        {/* <Box sx={{ mt: 2, pl: 2 }}>
           <Grid container spacing={2} justifyContent="space-between">
             <Grid item xs={6}>
               <Typography variant="body2" color="white">
@@ -99,7 +99,7 @@ const LoyaltyCard: React.FC = () => {
               </Typography>
             </Grid>
           </Grid>
-        </Box>
+        </Box> */}
         <BarcodeContainer>
           <BarcodeImg src={barcodeImage} alt="Aztec barcode" width={500} />
         </BarcodeContainer>

@@ -30,7 +30,7 @@ const MENU_OPTIONS = [
     icon: 'eva:settings-2-fill'
   },
   {
-    label: 'Add Organization',
+    label: 'Organizations',
     href: '/app/add-organization',
     icon: 'eva:plus-circle-fill'
   }

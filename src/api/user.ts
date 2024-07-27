@@ -14,9 +14,9 @@ export interface User {
 }
 
 export enum UserRoutes {
-  Login = 'no_auth/v0/users/login',
+  Login = '/no_auth/v0/users/login',
   user = '/v0/users/profile',
-  Register = '/v0/users/register/:orgId',
+  Register = '/no_auth/v0/users/register/:orgId',
   ChangePassword = '/v0/users/change-password',
   ChangeUserPassword = '/v0/users/change-user-password',
   UpdateProfile = '/v0/users/update-profile',
@@ -49,21 +49,20 @@ export const postUserLogin = async ({
 
 export interface UserResigerPostBody {
   email: string
-  orgId: string
   firstName: string
   lastName: string
   phone?: string
 }
 
-export const postUserRegister = async ({
-  orgId,
-  ...rest
-}: UserResigerPostBody): Promise<User> => {
-  const response: AxiosResponse<User> = await axiosInstance.post(
-    UserRoutes.Register.replace(':orgId', orgId),
-    rest
+export const postUserRegister = async (
+  organizationId: string,
+  data: UserResigerPostBody
+): Promise<AxiosResponse<void>> => {
+  const response = await axiosInstance.post<void>(
+    UserRoutes.Register.replace(':orgId', organizationId),
+    data
   )
-  return response.data
+  return response
 }
 
 export const postUserChangePassword = async (

@@ -68,11 +68,11 @@ export const updateOrganizationById = async (
 // Check if organization exists
 export const checkOrganizationExists = async (
   orgId: string
-): Promise<string> => {
-  const response = await axiosInstance.get(
+): Promise<AxiosResponse<void>> => {
+  const response = await axiosInstance.get<void>(
     OrgRoutes.OrganizationExists.replace(':orgId', orgId)
   )
-  return response.data
+  return response
 }
 
 // Get all users in the organization

@@ -12,10 +12,10 @@ import { Controller, useForm } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import { AppConfig } from '../../constants/config'
-import { checkOrgExist } from '../../api/check-org-exist'
-import { EnrollUserBody, postEnrollUser } from '../../api/enroll-user'
 import { Background } from '../../components/background'
 import { Loading } from '../../components/loading'
+import { postUserRegister, UserResigerPostBody } from '../../api/user'
+import { checkOrganizationExists } from '../../api/orgs'
 
 
 
@@ -24,10 +24,10 @@ export default function EnrollInPerkMembership() {
   const navigate = useNavigate()
   const [loading, setLoading] = useState(true)
   const [serverError, setServerError] = useState<string | null>(null)
-  const { handleSubmit, control, formState: { errors } } = useForm<EnrollUserBody>()
+  const { handleSubmit, control, formState: { errors } } = useForm<UserResigerPostBody>()
 
   useEffect(() => {
-    checkOrgExist(organizationId!).then((response) => {
+    checkOrganizationExists(organizationId!).then((response) => {
       if (response.status === 200) {
         setLoading(false)
       }
@@ -41,9 +41,9 @@ export default function EnrollInPerkMembership() {
     })
   }, [organizationId, navigate])
 
-  const onSubmit = async (data: EnrollUserBody) => {
+  const onSubmit = async (data: UserResigerPostBody) => {
     try {
-      const response = await postEnrollUser(organizationId!, data)
+      const response = await postUserRegister(organizationId!, data)
       if (response.status === 200) {
         // Redirect to success page
       }

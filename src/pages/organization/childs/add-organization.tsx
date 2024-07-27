@@ -16,10 +16,7 @@ const AddOrganization = () => {
   }
 
   return (
-    <Paper sx={{ p: 5 }} elevation={2}>
-      <Typography variant="h6" sx={{ mb: 5 }}>
-        Add Organization
-      </Typography>
+    <Box sx={{ p: 5 }}>
       <Box component="form" onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
@@ -126,7 +123,7 @@ const AddOrganization = () => {
           </Grid>
         </Grid>
       </Box>
-    </Paper>
+    </Box>
   )
 }
 

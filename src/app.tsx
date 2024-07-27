@@ -5,7 +5,7 @@ import { NotFound } from './pages/not-found/not-found'
 import { Loading } from './components/loading'
 import AuthGuard from './components/auth-guard'
 import { ProfilePage } from './pages/accounts/profile'
-import OrganizationHome from './pages/organization2'
+import OrganizationHome from './pages/organization'
 import UserPage from './pages/user-lists/users'
 
 const DashboardLayout = lazy(() => import('./dasboard-layout'))

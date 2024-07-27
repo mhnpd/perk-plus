@@ -6,7 +6,7 @@ import { Loading } from './components/loading'
 import AuthGuard from './components/auth-guard'
 import { ProfilePage } from './pages/accounts/profile'
 import OrganizationHome from './pages/organization/org-home'
-import UserPage from './pages/user-lists/list'
+import UserPage from './pages/user-lists/users'
 
 const DashboardLayout = lazy(() => import('./dasboard-layout'))
 const LoginPage = lazy(() => import('./pages/login/login'))

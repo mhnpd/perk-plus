@@ -1,18 +1,17 @@
 import React, { useEffect } from 'react'
-import {
-  Menu,
-  MenuItem,
-  Typography,
-  Button,
-} from '@mui/material'
+import { Menu, MenuItem, Typography, Button } from '@mui/material'
 import { ArrowDropDown } from '@mui/icons-material'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { selectUsersOrganization } from '../redux/slices/orgs'
 import { Organization } from '../api/orgs'
+import { getDefaultOrg, setDefaultOrganizationId } from '../redux/slices/user'
 
 const Organizations = () => {
+  const dispatch = useDispatch()
+  const defaultOrgId = useSelector(getDefaultOrg)
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const [defaultOrg, setDefaultOrg] = React.useState<Organization | null>(null)
+
   const organizationList = useSelector(selectUsersOrganization)
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -20,13 +19,15 @@ const Organizations = () => {
   }
 
   useEffect(() => {
-    if (organizationList.length > 0) {
-      setDefaultOrg(organizationList[0])
-    }
-  }, [organizationList])
+    const org = organizationList.find(
+      (org) => org.organizationId === defaultOrgId
+    )
+    if (org) return setDefaultOrg(org)
+  }, [defaultOrgId, organizationList])
 
   const handleOrgChange = (data: Organization) => {
     setDefaultOrg(data)
+    dispatch(setDefaultOrganizationId(data.organizationId))
     setAnchorEl(null)
   }
 
@@ -50,8 +51,11 @@ const Organizations = () => {
         open={Boolean(anchorEl)}
         onClose={() => setAnchorEl(null)}
       >
-        {organizationList.map(org => (
-          <MenuItem onClick={() => handleOrgChange(org)} key={org.organizationId}>
+        {organizationList.map((org) => (
+          <MenuItem
+            onClick={() => handleOrgChange(org)}
+            key={org.organizationId}
+          >
             <Typography variant="body2" color="gray">
               {org.name}
             </Typography>

@@ -5,6 +5,7 @@ import { getUserProfile, User } from '../../api/user'
 
 export interface UserState {
   profile: User | null
+  defaultOrganizationId: string | null
 }
 
 const initialState: UserState = {
@@ -15,7 +16,8 @@ const initialState: UserState = {
     lastName: '',
     phone: '',
     role: 'user'
-  }
+  },
+  defaultOrganizationId: null
 }
 
 const fetchuserProfile = createAsyncThunk(
@@ -29,14 +31,11 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    addUserProfile(state, action: PayloadAction<User>) {
-      state.profile = action.payload
-    },
     updateUserProfile(state, action: PayloadAction<User>) {
       state.profile = action.payload
     },
-    removeUserProfile(state) {
-      state.profile = null
+    setDefaultOrganizationId(state, action: PayloadAction<string>) {
+      state.defaultOrganizationId = action.payload
     }
   },
   extraReducers: (builder) => {
@@ -50,10 +49,13 @@ export const userSlice = createSlice({
   }
 })
 
-export const { addUserProfile, updateUserProfile, removeUserProfile } =
-  userSlice.actions
+export const {
+  updateUserProfile,
+  setDefaultOrganizationId,
+} = userSlice.actions
 
 /** Selectors */
 const selfSelector = (state: RootState) => state.user
 
 export const selectProfile = (state: RootState) => selfSelector(state).profile
+export const getDefaultOrg = (state: RootState) => selfSelector(state).defaultOrganizationId

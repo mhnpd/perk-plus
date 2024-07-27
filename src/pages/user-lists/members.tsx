@@ -1,15 +1,15 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchOrganizationUsers, selectUsersInOrganization } from '../../redux/slices/orgs'
+import { fetchOrganizationUsers, selectOrganizationMembers } from '../../redux/slices/orgs'
 import { getDefaultOrg } from '../../redux/slices/user'
 import UsersCard from './childs/user-card'
 import { Helmet } from 'react-helmet-async'
 import { AppConfig } from '../../constants/config'
 
-const Users = () => {
+const Members = () => {
   const dispatch = useDispatch()
   const defaultOrgId = useSelector(getDefaultOrg)
-  const users = useSelector(selectUsersInOrganization)
+  const users = useSelector(selectOrganizationMembers)
 
   useEffect(() => {
     dispatch(fetchOrganizationUsers(defaultOrgId))
@@ -18,11 +18,11 @@ const Users = () => {
   return (
     <>
       <Helmet>
-        <title>{`Users | ${AppConfig.AppName}`}</title>
+        <title>{`Members | ${AppConfig.AppName}`}</title>
       </Helmet>
-      <UsersCard users={users} title="Users" />
+      <UsersCard users={users} title="Member" />
     </>
   )
 }
 
-export default Users
+export default Members

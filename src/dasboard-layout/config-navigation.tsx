@@ -17,13 +17,16 @@ const navConfig = [
     title: 'user',
     path: '/app/users',
     icon: icon('ic_user'),
-    items: [
-      {
-        title: 'user',
-        path: '/app/users',
-        icon: icon('ic_user')
-      }
-    ]
+  },
+  {
+    title: 'Members',
+    path: '/app/members',
+    icon: icon('ic_user'),
+  },
+  {
+    title: 'Admins',
+    path: '/app/admins',
+    icon: icon('ic_user'),
   },
   {
     title: 'product',

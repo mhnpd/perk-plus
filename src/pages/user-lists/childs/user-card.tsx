@@ -71,7 +71,7 @@ const UsersCard = ({ users, title }: UsersProps) => {
         <Box sx={{ flex: 1, }}>
           <Typography variant="h5" sx={{ margin: 3.6 }}>{`${title} details`}</Typography>
           <Divider />
-          {selectedUser && <UserDetails user={selectedUser} />}
+          {<UserDetails user={selectedUser} />}
         </Box>
       </Box>
     </Card>

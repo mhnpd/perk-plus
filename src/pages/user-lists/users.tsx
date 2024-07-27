@@ -7,27 +7,34 @@ import {
   Card
 } from '@mui/material'
 import { User } from '../../api/user'
-import { useSelector } from 'react-redux'
-import { selectUsersInOrganization } from '../../redux/slices/orgs'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchOrganizationUsers, selectUsersInOrganization } from '../../redux/slices/orgs'
 import { getDisplayName } from '../../shared/get-display-name'
 import { debounce } from 'lodash'
 import { UserDetails } from './childs/user-details'
 import { UserList } from './childs/user-list'
 import { AppConfig } from '../../constants/config'
 import { Helmet } from 'react-helmet-async'
+import { getDefaultOrg } from '../../redux/slices/user'
 
 
 const Users = () => {
+  const dispatch = useDispatch()
+  const defaultOrgId = useSelector(getDefaultOrg)
   const users = useSelector(selectUsersInOrganization)
+
   const [filteredUsers, setFilteredUsers] = useState<User[]>([])
   const [selectedUser, setSelectedUser] = useState<User | null>(null)
 
   useEffect(() => {
-    if (users.length > 0) {
-      setSelectedUser(users[0])
-      setFilteredUsers(users)
-    }
-  }, [users])
+    setSelectedUser(users[0])
+    setFilteredUsers([...users])
+  }, [users, dispatch])
+
+  useEffect(() => {
+    setFilteredUsers([])
+    dispatch(fetchOrganizationUsers(defaultOrgId))
+  }, [defaultOrgId])
 
   const handleSearchChange = debounce((text: string) => {
     if (text === '') {
@@ -48,6 +55,7 @@ const Users = () => {
       setFilteredUsers(filtered)
     }
   }, 300)
+
   return (
     <Card>
       <Helmet>
@@ -63,14 +71,14 @@ const Users = () => {
             sx={{ margin: 3, width: 300 }}
           />
           <UserList
-            users={filteredUsers}
+            users={[...filteredUsers]}
             selectedUserId={selectedUser?.userId ?? null}
             onSelect={setSelectedUser}
           />
         </Box>
         <Divider orientation="vertical" flexItem />
         <Box sx={{ flex: 1, }}>
-          <Typography variant="h5" sx={{ margin: 3.6 }}>Contact Details</Typography>
+          <Typography variant="h5" sx={{ margin: 3.6 }}>User Details</Typography>
           <Divider />
           {selectedUser && <UserDetails user={selectedUser} />}
         </Box>

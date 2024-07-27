@@ -28,6 +28,11 @@ const MENU_OPTIONS = [
     label: 'Settings',
     href: '/settings',
     icon: 'eva:settings-2-fill'
+  },
+  {
+    label: 'Add Organization',
+    href: '/app/add-organization',
+    icon: 'eva:plus-circle-fill'
   }
 ]
 

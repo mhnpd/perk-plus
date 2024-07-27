@@ -5,11 +5,13 @@ import { NotFound } from './pages/not-found/not-found'
 import { Loading } from './components/loading'
 import AuthGuard from './components/auth-guard'
 import { ProfilePage } from './pages/accounts/profile'
+import OrganizationHome from './pages/organization/org-home'
 
 const DashboardLayout = lazy(() => import('./dasboard-layout'))
 const LoginPage = lazy(() => import('./pages/login/login'))
 const EnrollInPerkMembership = lazy(() => import('./pages/enroll-perk-membership'))
 const Home = lazy(() => import('./pages/home'))
+
 
 
 export default function App() {
@@ -44,7 +46,7 @@ export default function App() {
       children: [
         { element: <Home />, index: true },
         { path: 'profile', element: <ProfilePage /> },
-        // { path: 'products', element: <ProductsPage /> },
+        { path: '/app/add-organization', element: <OrganizationHome /> },
         // { path: 'blog', element: <BlogPage /> },
       ]
     },

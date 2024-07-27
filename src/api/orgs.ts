@@ -28,7 +28,7 @@ export const getOrganizations = async (): Promise<Organization[]> => {
   const response: AxiosResponse<Organization[]> = await axiosInstance.get<
     Organization[]
   >(OrgRoutes.Organizations)
-  return response.data
+  return [...response.data]
 }
 
 // Create an organization

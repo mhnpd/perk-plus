@@ -1,3 +1,4 @@
+import { AxiosResponse } from 'axios'
 import axiosInstance from '../shared/axios-config'
 
 export interface Card {
@@ -12,17 +13,17 @@ export interface Card {
 }
 
 export const CardRoutes = {
-  GetCard: '/v0/organigation/:organizationId/card',
+  GetCard: '/v0/organization/:organizationId/card',
   AddCardPoint: 'v0/organization/:organization/card/point',
   RedeemCardPoint: '/card/:cardId/redeem',
 }
 
 // Get all cards for a user
-export const getCards = async (orgId: string): Promise<Card[]> => {
-  const response = await axiosInstance.get<Card[]>(
+export const getCards = async (orgId: string): Promise<AxiosResponse<Card>> => {
+  const response = await axiosInstance.get<Card>(
     CardRoutes.GetCard.replace(':organizationId', orgId)
   )
-  return response.data
+  return response
 }
 
 // Get card by card id

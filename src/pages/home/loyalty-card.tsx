@@ -11,6 +11,11 @@ import {
 import { styled } from '@mui/system'
 import GoogleIcon from '@mui/icons-material/Google'
 import barcodeImage from './qrcode.png'
+import { useSelector } from 'react-redux'
+import { selectCard } from '../../redux/slices/cards'
+import { selectUsersOrganization } from '../../redux/slices/orgs'
+import { getDefaultOrg, selectProfile } from '../../redux/slices/user'
+import { getDisplayName } from '../../shared/get-display-name'
 
 const CardWrapper = styled(Card)(() => ({
   maxWidth: '260px',
@@ -44,6 +49,11 @@ const BarcodeImg = styled('img')({
 })
 
 const LoyaltyCard: React.FC = () => {
+  const card = useSelector(selectCard)
+  const orgs = useSelector(selectUsersOrganization)
+  const defaultOrgs = useSelector(getDefaultOrg)
+  const user = useSelector(selectProfile)
+  const currentOrg = orgs.find((org) => org.organizationId === defaultOrgs)
   return (
     <Box>
       <CardWrapper elevation={4}>
@@ -65,8 +75,8 @@ const LoyaltyCard: React.FC = () => {
               />
             </Grid>
             <Grid item xs={8} sx={{ display: 'flex', alignItems: 'center' }}>
-              <Typography color="white" variant="h6" component="div">
-                Google I/O 22
+              <Typography color="white" variant="body1" component="div">
+                {currentOrg?.name.slice(0, 15)}
               </Typography>
             </Grid>
           </Grid>
@@ -76,30 +86,15 @@ const LoyaltyCard: React.FC = () => {
           <Typography variant="subtitle1" color="white">
             Attendee
           </Typography>
-          <Typography variant="h5" color="white" component="div">
-            Alex McJacobs
+          <Typography variant="h6" color="white" component="div">
+            {getDisplayName(user)}
           </Typography>
         </Box>
-        {/* <Box sx={{ mt: 2, pl: 2 }}>
-          <Grid container spacing={2} justifyContent="space-between">
-            <Grid item xs={6}>
-              <Typography variant="body2" color="white">
-                POINTS
-              </Typography>
-              <Typography variant="h6" color="white" component="div">
-                1112
-              </Typography>
-            </Grid>
-            <Grid item xs={4} sx={{ textAlign: 'right', mr: 2 }}>
-              <Typography variant="body2" color="white">
-                Level
-              </Typography>
-              <Typography variant="h6" color="white" component="div">
-                Silver
-              </Typography>
-            </Grid>
-          </Grid>
-        </Box> */}
+        <Box sx={{ pl: 2, pt: 1 }}>
+          <Typography variant="subtitle1" color="white">
+            {card?.cardId}
+          </Typography>
+        </Box>
         <BarcodeContainer>
           <BarcodeImg src={barcodeImage} alt="Aztec barcode" width={500} />
         </BarcodeContainer>
@@ -112,13 +107,11 @@ const LoyaltyCard: React.FC = () => {
       <Box sx={{ mt: 2, ml: 8 }}>
         <Button
           variant="contained"
+          component='a'
           color="inherit"
           startIcon={<GoogleIcon />}
           sx={{ borderRadius: '20px', padding: '10px 20px' }}
-          onClick={() => {
-            // Handle add to wallet action here
-            alert('Add to Wallet clicked!')
-          }}
+          href={card?.googleWalletLink}
         >
           <Typography variant="inherit">Add to Wallet</Typography>
         </Button>

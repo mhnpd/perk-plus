@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../store'
 import { getUserProfile, User } from '../../api/user'
@@ -20,7 +21,7 @@ const initialState: UserState = {
   defaultOrganizationId: null
 }
 
-const fetchuserProfile = createAsyncThunk(
+export const fetchuserProfile: any = createAsyncThunk(
   'user/fetchUserProfile',
   async () => {
     const profile = await getUserProfile()

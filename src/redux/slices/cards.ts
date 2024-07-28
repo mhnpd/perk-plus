@@ -8,20 +8,20 @@ import { Card, getCards } from "../../api/card"
 const getOwnState = (state: RootState) => state.cards
 
 export interface UserState {
-  cards: Card[]
+  card: Card | null
   requestStatus: RequestStatus
 }
 
 
 const initialState: UserState = {
-  cards: [],
+  card: null,
   requestStatus: RequestStatus.IDLE,
 }
 export const fetchCard: any = createAsyncThunk(
-  'userOrgs/getUsersOrgs',
-  async () => {
-    const response = await getCards()
-    return response
+  'card/fetchCard',
+  async (orgId: string) => {
+    const response = await getCards(orgId)
+    return response.data
   }
 )
 
@@ -36,11 +36,11 @@ export const cardsSlice = createSlice({
       })
       .addCase(fetchCard.fulfilled, (state, action) => {
         state.requestStatus = RequestStatus.FULFILLED
-        state.cards = action.payload
+        state.card = action.payload
       })
   }
 })
 
-export const selectAllCards = createSelector(getOwnState, s => s.cards)
+export const selectCard = createSelector(getOwnState, s => s.card)
 
 

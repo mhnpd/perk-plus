@@ -11,18 +11,17 @@ export interface Card {
   expiryDate?: Date
 }
 
-interface CardPoint { points: number }
-
 export const CardRoutes = {
-  GetCards: '/card',
-  GetCardById: '/card/:cardId',
-  AddCardPoint: '/card/:cardId/point',
-  RedeemCardPoint: '/card/:cardId/redeem'
+  GetCard: '/v0/organigation/:organizationId/card',
+  AddCardPoint: 'v0/organization/:organization/card/point',
+  RedeemCardPoint: '/card/:cardId/redeem',
 }
 
 // Get all cards for a user
-export const getCards = async (): Promise<Card[]> => {
-  const response = await axiosInstance.get<Card[]>(CardRoutes.GetCards)
+export const getCards = async (orgId: string): Promise<Card[]> => {
+  const response = await axiosInstance.get<Card[]>(
+    CardRoutes.GetCard.replace(':organizationId', orgId)
+  )
   return response.data
 }
 
@@ -32,18 +31,19 @@ export const getCardById = async (
   cardId: string
 ): Promise<GetCardByIdResponse> => {
   const response = await axiosInstance.get<GetCardByIdResponse>(
-    CardRoutes.GetCardById.replace(':cardId', cardId)
+    CardRoutes.GetCard.replace(':cardId', cardId)
   )
   return response.data
 }
 
+// Add points to a card
 export const addCardPoint = async (
   cardId: string,
-  data: CardPoint
+  points: number
 ) => {
   const response = await axiosInstance.post(
     CardRoutes.AddCardPoint.replace(':cardId', cardId),
-    data
+    { points: points }
   )
   return response.data
 }
@@ -51,11 +51,11 @@ export const addCardPoint = async (
 
 export const redeemCardPoint = async (
   cardId: string,
-  data: CardPoint
+  points: number
 ) => {
   const response = await axiosInstance.post(
     CardRoutes.RedeemCardPoint.replace(':cardId', cardId),
-    data
+    { points: points }
   )
   return response.data
 }

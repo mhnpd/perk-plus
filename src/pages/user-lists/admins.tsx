@@ -8,6 +8,7 @@ import { getDefaultOrg } from '../../redux/slices/user'
 import UsersCard from './childs/user-card'
 import { Helmet } from 'react-helmet-async'
 import { AppConfig } from '../../constants/config'
+import { addOrganizationAdmin, removeOrganizationAdmin } from '../../api/orgs'
 
 const Admins = () => {
   const dispatch = useDispatch()
@@ -18,8 +19,16 @@ const Admins = () => {
     dispatch(fetchOrganizationAdmins(defaultOrgId))
   }, [defaultOrgId])
 
-  const handleInvite = (email: string) => {
-    console.log('Invite', email)
+  const handleInvite = async (email: string) => {
+    const r = await addOrganizationAdmin(defaultOrgId!, email)
+    await dispatch(fetchOrganizationAdmins(defaultOrgId))
+    return r
+  }
+
+  const handleAdminRemove = async (userId: string) => {
+    const response = await removeOrganizationAdmin(defaultOrgId!, userId)
+    await dispatch(fetchOrganizationAdmins(defaultOrgId))
+    return response
   }
 
   return (
@@ -31,7 +40,9 @@ const Admins = () => {
         users={users}
         title="Admins"
         showInviteButton
+        showRemoveUserButton
         onInvite={handleInvite}
+        onRemove={handleAdminRemove}
       />
     </>
   )

@@ -1,13 +1,15 @@
 import { useState, MouseEvent } from 'react'
-import { Box, Button, Popover, TextField, Typography } from '@mui/material'
+import { Box, Button, IconButton, Popover, TextField, Typography } from '@mui/material'
+import { AxiosError, AxiosResponse } from 'axios'
+import PersonAddIcon from '@mui/icons-material/PersonAdd'
 
 export interface InviteUserProps {
-  onInvite: (email: string) => void
-  buttonTitle: string
+  onInvite?: (email: string) => Promise<AxiosResponse<string>>
 }
 
-export const InviteUser = ({ onInvite, buttonTitle }: InviteUserProps) => {
+export const InviteUser = ({ onInvite }: InviteUserProps) => {
   const [email, setEmail] = useState<string>('')
+  const [error, setError] = useState<string>('')
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
 
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
@@ -15,12 +17,19 @@ export const InviteUser = ({ onInvite, buttonTitle }: InviteUserProps) => {
   }
 
   const handleClose = () => {
+    setError('')
     setAnchorEl(null)
   }
 
-  const handleInvite = () => {
-    onInvite(email)
-    handleClose()
+  const handleInvite = async () => {
+    try {
+      onInvite && (await onInvite(email))
+      handleClose()
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        setError(error.response?.data.message)
+      }
+    }
   }
 
   const open = Boolean(anchorEl)
@@ -28,14 +37,9 @@ export const InviteUser = ({ onInvite, buttonTitle }: InviteUserProps) => {
 
   return (
     <div>
-      <Button
-        aria-describedby={id}
-        color="inherit"
-        variant="text"
-        onClick={handleClick}
-      >
-        {buttonTitle}
-      </Button>
+      <IconButton onClick={handleClick}>
+        <PersonAddIcon style={{ color: '#6c757d' }} />
+      </IconButton>
       <Popover
         id={id}
         open={open}
@@ -62,6 +66,8 @@ export const InviteUser = ({ onInvite, buttonTitle }: InviteUserProps) => {
             onChange={(e) => setEmail(e.target.value)}
             fullWidth
             margin="normal"
+            error={!!error}
+            helperText={error}
           />
           <Button aria-describedby={id}
             color="inherit"

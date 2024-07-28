@@ -2,18 +2,29 @@ import { useEffect, useState } from 'react'
 import { Box, Typography, Divider, TextField, Card, Grid } from '@mui/material'
 import { User } from '../../../api/user'
 import { getDisplayName } from '../../../shared/get-display-name'
-import { debounce, noop } from 'lodash'
+import { debounce } from 'lodash'
 import { UserDetails } from './user-details'
 import { UserList } from './user-list'
 import { InviteUser } from './invite-user'
+import { AxiosResponse } from 'axios'
+import RemoveUserPopover from './remove-user'
 
 interface UsersProps {
   users: User[]
   showInviteButton?: boolean
-  onInvite?: (email: string) => void
+  showRemoveUserButton?: boolean
+  onInvite?: (email: string) => Promise<AxiosResponse<string>>
+  onRemove?: (userId: string) => Promise<AxiosResponse<string>>
   title: string
 }
-const UsersCard = ({ users, title, showInviteButton, onInvite }: UsersProps) => {
+const UsersCard = ({
+  users,
+  title,
+  showInviteButton,
+  onInvite,
+  onRemove,
+  showRemoveUserButton
+}: UsersProps) => {
   const [filteredUsers, setFilteredUsers] = useState<User[]>([])
   const [selectedUser, setSelectedUser] = useState<User | null>(null)
 
@@ -66,16 +77,19 @@ const UsersCard = ({ users, title, showInviteButton, onInvite }: UsersProps) => 
             <Grid item xs={3}>
               <Typography variant="h5">{`${title} details`}</Typography>
             </Grid>
-            {showInviteButton && (
-              <Grid xs={8} item>
-                <Box display="flex" justifyContent="flex-end">
-                  <InviteUser
-                    buttonTitle={`Invite ${title}`}
-                    onInvite={onInvite ?? noop}
-                  />
+            <Grid xs={8} item>
+              <Box display="flex" justifyContent="flex-end">
+                <Box display="flex" alignItems="center">
+                  {showInviteButton && <InviteUser onInvite={onInvite} />}
+                  {showRemoveUserButton && (
+                    <RemoveUserPopover
+                      user={selectedUser!}
+                      onRemove={onRemove!}
+                    />
+                  )}
                 </Box>
-              </Grid>
-            )}
+              </Box>
+            </Grid>
           </Grid>
           <Divider />
           {<UserDetails user={selectedUser} />}

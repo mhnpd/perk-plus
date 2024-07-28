@@ -10,17 +10,27 @@ export interface Organization {
   banner?: string
   logo?: string
 }
-
 export enum OrgRoutes {
+  /** Organization routes */
   Organizations = '/v0/organizations',
   OrganizationById = '/v0/organizations/:orgId',
   OrganizationExists = '/v0/organizations/:orgId/exists',
-  AddOrganizationMember = '/v0/organizations/:orgId/add-member',
-  AddOrganizationAdmin = '/v0/organizations/:orgId/add-admin',
+
+  /** Organization User routes */
   OrganizationUsers = '/v0/organizations/:orgId/users',
+
+  /** Organization Member routes */
+  AddOrganizationMember = '/v0/organizations/:orgId/add-member',
   OrganizationMembers = '/v0/organizations/:orgId/members',
+  OrganizationMember = '/v0/organizations/:orgId/members/:userId',
+
+  /** Organization Admin routes */
   OrganizationAdmins = '/v0/organizations/:orgId/admins',
-  AllOrganizations = '/v0/organizations/all'
+  AddOrganizationAdmin = '/v0/organizations/:orgId/add-admin',
+  OrganizationAdmin = '/v0/organizations/:orgId/admin/:userId',
+
+  /** Super admin routes */
+  AllOrganizations = '/v0/organizations/all',
 }
 
 // Get all user-readable organizations
@@ -106,23 +116,45 @@ export const getOrganizationAdmins = async (
 // Add new member to organization
 export const addOrganizationMember = async (
   orgId: string,
-  memberId: string
-): Promise<string> => {
+  email: string
+): Promise<AxiosResponse<string, { message: string }>> => {
   const response = await axiosInstance.put<string>(
     OrgRoutes.AddOrganizationMember.replace(':orgId', orgId),
-    { memberId }
+    { email }
   )
-  return response.data
+  return response
 }
 
 // Add new admin to organization
 export const addOrganizationAdmin = async (
   orgId: string,
-  adminId: string
-): Promise<string> => {
+  email: string
+): Promise<AxiosResponse<string>> => {
   const response = await axiosInstance.put<string>(
     OrgRoutes.AddOrganizationAdmin.replace(':orgId', orgId),
-    { adminId }
+    { email }
   )
-  return response.data
+  return response
+}
+
+// Remove member from organization
+export const removeOrganizationMember = async (
+  orgId: string,
+  userId: string
+): Promise<AxiosResponse<string>> => {
+  const response = await axiosInstance.delete<string>(
+    `${OrgRoutes.OrganizationMember.replace(':orgId', orgId)}/${userId}`
+  )
+  return response
+}
+
+// Remove admin from organization
+export const removeOrganizationAdmin = async (
+  orgId: string,
+  userId: string
+): Promise<AxiosResponse<string>> => {
+  const response = await axiosInstance.delete<string>(
+    `${OrgRoutes.OrganizationAdmin.replace(':orgId', orgId)}/${userId}`
+  )
+  return response
 }

@@ -20,7 +20,11 @@ const Users = () => {
       <Helmet>
         <title>{`Users | ${AppConfig.AppName}`}</title>
       </Helmet>
-      <UsersCard users={users} title="Users" />
+      <UsersCard
+        users={users}
+        title="Users"
+        showInviteButton={false}
+      />
     </>
   )
 }

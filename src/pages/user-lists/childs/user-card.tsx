@@ -1,23 +1,19 @@
 import { useEffect, useState } from 'react'
-import {
-  Box,
-  Typography,
-  Divider,
-  TextField,
-  Card
-} from '@mui/material'
+import { Box, Typography, Divider, TextField, Card, Grid } from '@mui/material'
 import { User } from '../../../api/user'
 import { getDisplayName } from '../../../shared/get-display-name'
-import { debounce } from 'lodash'
+import { debounce, noop } from 'lodash'
 import { UserDetails } from './user-details'
 import { UserList } from './user-list'
+import { InviteUser } from './invite-user'
 
 interface UsersProps {
   users: User[]
+  showInviteButton?: boolean
+  onInvite?: (email: string) => void
   title: string
 }
-const UsersCard = ({ users, title }: UsersProps) => {
-
+const UsersCard = ({ users, title, showInviteButton, onInvite }: UsersProps) => {
   const [filteredUsers, setFilteredUsers] = useState<User[]>([])
   const [selectedUser, setSelectedUser] = useState<User | null>(null)
 
@@ -26,8 +22,6 @@ const UsersCard = ({ users, title }: UsersProps) => {
     setFilteredUsers([...users])
     setFilteredUsers(users)
   }, [users])
-
-
 
   const handleSearchChange = debounce((text: string) => {
     if (text === '') {
@@ -51,7 +45,6 @@ const UsersCard = ({ users, title }: UsersProps) => {
 
   return (
     <Card>
-
       <Box sx={{ display: 'flex', height: '70vh' }}>
         <Box sx={{ overflow: 'auto' }}>
           <TextField
@@ -68,8 +61,22 @@ const UsersCard = ({ users, title }: UsersProps) => {
           />
         </Box>
         <Divider orientation="vertical" flexItem />
-        <Box sx={{ flex: 1, }}>
-          <Typography variant="h5" sx={{ margin: 3.6 }}>{`${title} details`}</Typography>
+        <Box sx={{ flex: 1 }}>
+          <Grid container sx={{ margin: 3.6 }}>
+            <Grid item xs={3}>
+              <Typography variant="h5">{`${title} details`}</Typography>
+            </Grid>
+            {showInviteButton && (
+              <Grid xs={8} item>
+                <Box display="flex" justifyContent="flex-end">
+                  <InviteUser
+                    buttonTitle={`Invite ${title}`}
+                    onInvite={onInvite ?? noop}
+                  />
+                </Box>
+              </Grid>
+            )}
+          </Grid>
           <Divider />
           {<UserDetails user={selectedUser} />}
         </Box>

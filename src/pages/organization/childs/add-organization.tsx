@@ -1,5 +1,5 @@
 import { useForm, Controller } from 'react-hook-form'
-import { TextField, Button, Box, Typography, Paper } from '@mui/material'
+import { TextField, Button, Box, } from '@mui/material'
 import Grid from '@mui/material/Grid'
 import { createOrganization, Organization } from '../../../api/orgs'
 

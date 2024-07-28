@@ -1,6 +1,9 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchOrganizationAdmins, selectOrganizationAdmins } from '../../redux/slices/orgs'
+import {
+  fetchOrganizationAdmins,
+  selectOrganizationAdmins
+} from '../../redux/slices/orgs'
 import { getDefaultOrg } from '../../redux/slices/user'
 import UsersCard from './childs/user-card'
 import { Helmet } from 'react-helmet-async'
@@ -15,12 +18,21 @@ const Admins = () => {
     dispatch(fetchOrganizationAdmins(defaultOrgId))
   }, [defaultOrgId])
 
+  const handleInvite = (email: string) => {
+    console.log('Invite', email)
+  }
+
   return (
     <>
       <Helmet>
         <title>{`Admins | ${AppConfig.AppName}`}</title>
       </Helmet>
-      <UsersCard users={users} title="Admins" />
+      <UsersCard
+        users={users}
+        title="Admins"
+        showInviteButton
+        onInvite={handleInvite}
+      />
     </>
   )
 }

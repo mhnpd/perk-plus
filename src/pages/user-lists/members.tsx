@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchOrganizationUsers, selectOrganizationMembers } from '../../redux/slices/orgs'
+import { fetchOrganizationMembers, selectOrganizationMembers } from '../../redux/slices/orgs'
 import { getDefaultOrg } from '../../redux/slices/user'
 import UsersCard from './childs/user-card'
 import { Helmet } from 'react-helmet-async'
@@ -12,7 +12,7 @@ const Members = () => {
   const users = useSelector(selectOrganizationMembers)
 
   useEffect(() => {
-    dispatch(fetchOrganizationUsers(defaultOrgId))
+    dispatch(fetchOrganizationMembers(defaultOrgId))
   }, [defaultOrgId])
 
   return (

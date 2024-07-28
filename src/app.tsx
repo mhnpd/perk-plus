@@ -9,6 +9,7 @@ import OrganizationHome from './pages/organization'
 import UsersPage from './pages/user-lists/users'
 import MemebersPage from './pages/user-lists/members'
 import AdminsPage from './pages/user-lists/admins'
+import DataLoader from './dasboard-layout/data-loader'
 
 const DashboardLayout = lazy(() => import('./dasboard-layout'))
 const LoginPage = lazy(() => import('./pages/login/login'))
@@ -41,7 +42,9 @@ export default function App() {
         <Suspense fallback={<Loading />}>
           <AuthGuard>
             <DashboardLayout>
-              <Outlet />
+              <DataLoader>
+                <Outlet />
+              </DataLoader>
             </DashboardLayout>
           </AuthGuard>
         </Suspense>

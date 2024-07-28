@@ -27,7 +27,7 @@ export enum OrgRoutes {
   /** Organization Admin routes */
   OrganizationAdmins = '/v0/organizations/:orgId/admins',
   AddOrganizationAdmin = '/v0/organizations/:orgId/add-admin',
-  OrganizationAdmin = '/v0/organizations/:orgId/admin/:userId',
+  OrganizationAdmin = '/v0/organizations/:orgId/admins/:userId',
 
   /** Super admin routes */
   AllOrganizations = '/v0/organizations/all',
@@ -143,7 +143,7 @@ export const removeOrganizationMember = async (
   userId: string
 ): Promise<AxiosResponse<string>> => {
   const response = await axiosInstance.delete<string>(
-    `${OrgRoutes.OrganizationMember.replace(':orgId', orgId)}/${userId}`
+    OrgRoutes.OrganizationMember.replace(':orgId', orgId).replace(':userId', userId)
   )
   return response
 }
@@ -154,7 +154,7 @@ export const removeOrganizationAdmin = async (
   userId: string
 ): Promise<AxiosResponse<string>> => {
   const response = await axiosInstance.delete<string>(
-    `${OrgRoutes.OrganizationAdmin.replace(':orgId', orgId)}/${userId}`
+    OrgRoutes.OrganizationAdmin.replace(':orgId', orgId).replace(':userId', userId)
   )
   return response
 }

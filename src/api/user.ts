@@ -7,6 +7,10 @@ export interface User {
   firstName: string
   lastName: string
   email: string
+  country?: string
+  address?: string
+  zipCode?: string
+  company?: string 
   phone?: string
   locale?: string
   profileImage?: string

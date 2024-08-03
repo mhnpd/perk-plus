@@ -1,4 +1,5 @@
 import React from 'react'
+import {getNames} from 'country-list'
 import { useForm, Controller } from 'react-hook-form'
 import {
   Box,
@@ -11,39 +12,16 @@ import {
   Grid,
   Card
 } from '@mui/material'
+import { User } from '../../../api/user'
 
-type FormValues = {
-  fullName: string
-  email: string
-  phoneNumber: string
-  country: string
-  state: string
-  city: string
-  address: string
-  zipCode: string
-  company: string
-  role: string
-}
+const countries = getNames()
 
-const countries = ['United States', 'Canada', 'United Kingdom']
-
-const UserForm: React.FC = () => {
-  const { control, handleSubmit } = useForm<FormValues>({
-    defaultValues: {
-      fullName: '',
-      email: '',
-      phoneNumber: '',
-      country: '',
-      state: '',
-      city: '',
-      address: '',
-      zipCode: '',
-      company: '',
-      role: ''
-    }
+const UserForm: React.FC<{ user: User }> = ({ user }) => {
+  const { control, handleSubmit } = useForm<User>({
+    defaultValues: { ...user }
   })
 
-  const onSubmit = (data: FormValues) => {
+  const onSubmit = (data: User) => {
     console.log(data)
   }
 
@@ -57,14 +35,14 @@ const UserForm: React.FC = () => {
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
             <Controller
-              name="fullName"
+              name="firstName"
               control={control}
               render={({ field }) => (
                 <TextField
                   {...field}
                   label="Full name"
                   variant="outlined"
-                  size='medium'
+                  size="medium"
                   fullWidth
                 />
               )}
@@ -72,7 +50,7 @@ const UserForm: React.FC = () => {
           </Grid>
           <Grid item xs={12} sm={6}>
             <Controller
-              name="email"
+              name="lastName"
               control={control}
               render={({ field }) => (
                 <TextField
@@ -86,12 +64,12 @@ const UserForm: React.FC = () => {
           </Grid>
           <Grid item xs={12} sm={6}>
             <Controller
-              name="phoneNumber"
+              name="email"
               control={control}
               render={({ field }) => (
                 <TextField
                   {...field}
-                  label="Phone number"
+                  label="Email"
                   variant="outlined"
                   fullWidth
                 />
@@ -118,7 +96,7 @@ const UserForm: React.FC = () => {
           </Grid>
           <Grid item xs={12} sm={6}>
             <Controller
-              name="state"
+              name="phone"
               control={control}
               render={({ field }) => (
                 <TextField
@@ -127,15 +105,6 @@ const UserForm: React.FC = () => {
                   variant="outlined"
                   fullWidth
                 />
-              )}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Controller
-              name="city"
-              control={control}
-              render={({ field }) => (
-                <TextField {...field} label="City" variant="outlined" fullWidth />
               )}
             />
           </Grid>
@@ -178,15 +147,6 @@ const UserForm: React.FC = () => {
                   variant="outlined"
                   fullWidth
                 />
-              )}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Controller
-              name="role"
-              control={control}
-              render={({ field }) => (
-                <TextField {...field} label="Role" variant="outlined" fullWidth />
               )}
             />
           </Grid>

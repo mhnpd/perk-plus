@@ -1,15 +1,15 @@
 import { Helmet } from 'react-helmet-async'
 import { AppConfig } from '../../constants/config'
-import { useSelector } from 'react-redux'
 import Container from '@mui/material/Container'
-import { selectProfile } from '../../redux/slices/user'
 import UserForm from './childs/profile-update'
 import Grid from '@mui/material/Grid'
-import Card from '@mui/material/Card'
 import UserPhotoUpload from './childs/profile-photo'
 import { Typography } from '@mui/material'
+import { useSelector } from 'react-redux'
+import { selectProfile } from '../../redux/slices/user'
 
 function ProfilePage() {
+  const profile = useSelector(selectProfile)
   return (
     <>
       <Helmet>
@@ -24,7 +24,7 @@ function ProfilePage() {
             <UserPhotoUpload />
           </Grid>
           <Grid item xs={12} md={8}>
-            <UserForm />
+            <UserForm user={profile} />
           </Grid>
         </Grid>
       </Container>

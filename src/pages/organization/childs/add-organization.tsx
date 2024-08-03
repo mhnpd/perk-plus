@@ -69,7 +69,7 @@ const AddOrganization = () => {
               render={({ field }) => (
                 <TextField
                   {...field}
-                  label="Name"
+                  label="Name *"
                   variant="outlined"
                   error={!!errors.name}
                   helperText={errors.name ? errors.name.message : ''}
@@ -94,7 +94,7 @@ const AddOrganization = () => {
               render={({ field }) => (
                 <TextField
                   {...field}
-                  label="Email"
+                  label="Email *"
                   variant="outlined"
                   error={!!errors.email}
                   helperText={errors.email ? errors.email.message : ''}
@@ -113,6 +113,46 @@ const AddOrganization = () => {
                 <TextField
                   {...field}
                   label="Phone"
+                  variant="outlined"
+                  fullWidth
+                />
+              )}
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <Controller
+              name="website"
+              control={control}
+              defaultValue=""
+              rules={
+                {
+                  pattern: {
+                    value: /^(ftp|http|https):\/\/[^ "]+$/,
+                    message: 'Invalid website url'
+                  }
+                }
+              }
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Website"
+                  variant="outlined"
+                  fullWidth
+                />
+              )}
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <Controller
+              name="address"
+              control={control}
+              defaultValue=""
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Address"
                   variant="outlined"
                   fullWidth
                 />
@@ -177,15 +217,14 @@ const AddOrganization = () => {
           <Grid
             item
             xs={12}
-            sx={{ display: 'flex', justifyContent: 'flex-end' }}
+            sx={{ display: 'flex', justifyContent: 'flex-end', mt: 4 }}
           >
             <Button
               type="submit"
               size="large"
               variant="contained"
               color="inherit"
-              disabled={isSubmitting}
-              endIcon={isSubmitting ?? <CloudUploadIcon />}
+              disabled={isSubmitting} 
             >
               Submit
             </Button>

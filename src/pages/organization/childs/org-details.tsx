@@ -2,7 +2,7 @@ import {
   Box,
   Avatar,
   Typography,
-  Divider
+  Divider,
 } from '@mui/material'
 import Grid from '@mui/material/Grid'
 import { Organization } from '../../../api/orgs'
@@ -12,13 +12,18 @@ interface OrgDetailsProps {
   org: Organization
 }
 
+
+
+const hasImage = (img: File | string | undefined):boolean => {
+  return !!img
+}
+
 export const OrgDetails = ({ org }: OrgDetailsProps) => (
   <>
     <Box sx={{ ml: 4, mt: 2 }}>
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 3, mt: 5 }}>
         <Avatar
-          // TODO: Change this to user.profileImage
-          src='https://modernize-nextjs.adminmart.com/images/profile/user-3.jpg'
+          src={org.logo as string}
           sx={{ width: 90, height: 90 }}
         />
         <Box sx={{ marginLeft: 2 }}>
@@ -45,29 +50,39 @@ export const OrgDetails = ({ org }: OrgDetailsProps) => (
           <Typography variant="body1">{org.email}</Typography>
         </Grid>
       </Grid>
-      <Box sx={{ marginTop: 2 }}>
+      <Grid container justifyContent='space-between' sx={{ mt: 2 }} spacing={3}>
+        <Grid item xs={6}>
         <Typography variant="body2" color="textSecondary">
           Address
         </Typography>
         <Typography variant="body1" color={org.email ?? 'GrayText'} >
-          {org?.banner ?? 'Not available'}
+          {org?.address ?? 'Not available'}
         </Typography>
-      </Box>
+        </Grid>
+        <Grid item xs={6}>
+        <Typography variant="body2" color="textSecondary">
+          Website
+        </Typography>
+        <Typography variant="body1" color={org.email ?? 'GrayText'} >
+          {org?.website ?? 'Not available'}
+        </Typography>
+        </Grid>
+      </Grid>
       <Grid container justifyContent='space-between' sx={{ mt: 2, pb: 5 }} spacing={3}>
         <Grid item xs={6}>
-          <Typography variant="body2" color="textSecondary">
-            Department
+        <Typography variant="body2" color="textSecondary">
+            Banner
           </Typography>
-          <Typography variant="body1" color={org?.banner ?? 'GrayText'}>
-            {org?.banner ?? 'Not available'}
+          <Typography variant="body1" color={!hasImage(org.banner) ? 'GrayText' : undefined} >
+          {hasImage(org.banner)? 'banner.png' : 'Not available'}
           </Typography>
         </Grid>
         <Grid item xs={6}>
-          <Typography variant="body2" color="textSecondary">
-            Company
+        <Typography variant="body2" color="textSecondary">
+            Logo
           </Typography>
-          <Typography variant="body1" color={org?.banner ?? 'GrayText'}>
-            {org?.banner ?? 'Not available'}
+          <Typography variant="body1" color={!hasImage(org.banner) ? 'GrayText' : undefined} >
+           {hasImage(org.logo)? 'logo.png' : 'Not available'}
           </Typography>
         </Grid>
       </Grid>

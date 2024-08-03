@@ -29,9 +29,9 @@ export const OrgList = ({
           onClick={() => onSelect(org)}
         >
           <ListItemAvatar>
-            <Avatar src={org.logo} />
+            <Avatar src={org.logo as string || ''} />
           </ListItemAvatar>
-          <ListItemText primary={org.name} secondary={org.email} />
+          <ListItemText primary={org.name} secondary={org.website || org.email} />
         </ListItemButton>
       </div>
     )

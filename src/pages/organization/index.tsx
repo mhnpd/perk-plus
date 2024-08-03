@@ -12,7 +12,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux'
 import { selectUsersOrganization } from '../../redux/slices/orgs'
 import { debounce } from 'lodash'
-import { OrgDetails } from './childs/user-details'
+import { OrgDetails } from './childs/org-details'
 import { OrgList } from './childs/org-list'
 import { AppConfig } from '../../constants/config'
 import { Helmet } from 'react-helmet-async'

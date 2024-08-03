@@ -5,8 +5,10 @@ import { User } from './user'
 export interface Organization {
   organizationId: string
   name: string
+  website?: string
   email?: string
   phone?: string
+  address?: string
   banner?: File | string
   logo?: File | string
 }

@@ -1,5 +1,5 @@
 import React from 'react'
-import {getNames} from 'country-list'
+import { getNames } from 'country-list'
 import { useForm, Controller } from 'react-hook-form'
 import {
   Box,
@@ -12,17 +12,17 @@ import {
   Grid,
   Card
 } from '@mui/material'
-import { User } from '../../../api/user'
+import { postUserUpdateProfile, User } from '../../../api/user'
 
 const countries = getNames()
 
-const UserForm: React.FC<{ user: User }> = ({ user }) => {
-  const { control, handleSubmit } = useForm<User>({
+const UserForm: React.FC<{ user: User | null }> = ({ user }) => {
+  const { control, handleSubmit, formState: { isSubmitting } } = useForm<User>({
     defaultValues: { ...user }
   })
 
-  const onSubmit = (data: User) => {
-    console.log(data)
+  const onSubmit = async (data: User) => {
+    await postUserUpdateProfile(data)
   }
 
   return (
@@ -37,10 +37,17 @@ const UserForm: React.FC<{ user: User }> = ({ user }) => {
             <Controller
               name="firstName"
               control={control}
+              rules={{
+                required: 'Last name is required',
+                pattern: {
+                  value: /^[a-zA-Z ]+$/,
+                  message: 'Invalid last name'
+                }
+              }}
               render={({ field }) => (
                 <TextField
                   {...field}
-                  label="Full name"
+                  label="First name *"
                   variant="outlined"
                   size="medium"
                   fullWidth
@@ -52,10 +59,17 @@ const UserForm: React.FC<{ user: User }> = ({ user }) => {
             <Controller
               name="lastName"
               control={control}
+              rules={{
+                required: 'Last name is required',
+                pattern: {
+                  value: /^[a-zA-Z ]+$/,
+                  message: 'Invalid last name'
+                }
+              }}
               render={({ field }) => (
                 <TextField
                   {...field}
-                  label="Email address"
+                  label="Last Name *"
                   variant="outlined"
                   fullWidth
                 />
@@ -66,10 +80,37 @@ const UserForm: React.FC<{ user: User }> = ({ user }) => {
             <Controller
               name="email"
               control={control}
+              rules={{
+                required: 'Email is required',
+                pattern: {
+                  value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                  message: 'Invalid email address'
+                }
+              }}
               render={({ field }) => (
                 <TextField
                   {...field}
-                  label="Email"
+                  label="Email *"
+                  variant="outlined"
+                  fullWidth
+                />
+              )}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Controller
+              name="phone"
+              control={control}
+              rules={{
+                pattern: {
+                  value: /^[0-9]+$/,
+                  message: 'Invalid phone number'
+                }
+              }}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Phone number"
                   variant="outlined"
                   fullWidth
                 />
@@ -96,7 +137,7 @@ const UserForm: React.FC<{ user: User }> = ({ user }) => {
           </Grid>
           <Grid item xs={12} sm={6}>
             <Controller
-              name="phone"
+              name="state"
               control={control}
               render={({ field }) => (
                 <TextField
@@ -157,8 +198,9 @@ const UserForm: React.FC<{ user: User }> = ({ user }) => {
                 size="large"
                 variant="contained"
                 color="inherit"
+                disabled={isSubmitting}
               >
-                Create user
+                Update Profile
               </Button>
             </Box>
           </Grid>

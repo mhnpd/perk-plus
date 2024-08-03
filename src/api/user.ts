@@ -8,9 +8,10 @@ export interface User {
   lastName: string
   email: string
   country?: string
+  state?: string
   address?: string
   zipCode?: string
-  company?: string 
+  company?: string
   phone?: string
   locale?: string
   profileImage?: string
@@ -92,15 +93,12 @@ export const putUserChangeUserPassword = async (
   return response.data
 }
 
-export const postUserUpdateProfile = async (
-  firstName: string,
-  lastName: string,
-  phone: string
-): Promise<User> => {
-  const response: AxiosResponse<User> = await axiosInstance.put(
-    UserRoutes.UpdateProfile,
-    { firstName, lastName, phone }
-  )
+export const postUserUpdateProfile = async (user: User): Promise<User> => {
+  const locale = navigator.language || 'en-US'
+  const response = await axiosInstance.put<User>(UserRoutes.UpdateProfile, {
+    ...user,
+    locale
+  })
   return response.data
 }
 

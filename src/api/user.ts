@@ -93,7 +93,7 @@ export const putUserChangeUserPassword = async (
   return response.data
 }
 
-export const postUserUpdateProfile = async (user: User): Promise<User> => {
+export const postUserUpdateProfile = async (user: Partial<User>): Promise<User> => {
   const locale = navigator.language || 'en-US'
   const response = await axiosInstance.put<User>(UserRoutes.UpdateProfile, {
     ...user,

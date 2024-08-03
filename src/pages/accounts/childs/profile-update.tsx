@@ -13,16 +13,20 @@ import {
   Card
 } from '@mui/material'
 import { postUserUpdateProfile, User } from '../../../api/user'
+import { useDispatch } from 'react-redux'
+import { updateUserProfile } from '../../../redux/slices/user'
 
 const countries = getNames()
 
 const UserForm: React.FC<{ user: User | null }> = ({ user }) => {
+  const dispatch = useDispatch()
   const { control, handleSubmit, formState: { isSubmitting } } = useForm<User>({
     defaultValues: { ...user }
   })
 
   const onSubmit = async (data: User) => {
-    await postUserUpdateProfile(data)
+   const user = await postUserUpdateProfile(data)
+   dispatch(updateUserProfile(user))
   }
 
   return (

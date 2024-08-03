@@ -43,6 +43,5 @@ export async function uploadFile(file: File):Promise<AssetInfo> {
       'Content-Type': 'multipart/form-data'
     }
   })
-  console.log(response.data)
   return response.data
 }

@@ -7,8 +7,8 @@ export interface Organization {
   name: string
   email?: string
   phone?: string
-  banner?: string
-  logo?: string
+  banner?: File | string
+  logo?: File | string
 }
 export enum OrgRoutes {
   /** Organization routes */

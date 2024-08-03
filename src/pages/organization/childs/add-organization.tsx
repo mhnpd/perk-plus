@@ -1,18 +1,59 @@
 import { useForm, Controller } from 'react-hook-form'
-import { TextField, Button, Box, } from '@mui/material'
+import { TextField, Button, Box, styled } from '@mui/material'
 import Grid from '@mui/material/Grid'
 import { createOrganization, Organization } from '../../../api/orgs'
+import CloudUploadIcon from '@mui/icons-material/CloudUpload'
+import { uploadFile } from '../../../api/file'
+import { useDispatch } from 'react-redux'
+import { fetchOrganizations } from '../../../redux/slices/orgs'
 
+const VisuallyHiddenInput = styled('input')({
+  clip: 'rect(0 0 0 0)',
+  clipPath: 'inset(50%)',
+  height: 1,
+  overflow: 'hidden',
+  position: 'absolute',
+  bottom: 0,
+  left: 0,
+  whiteSpace: 'nowrap',
+  width: 1
+})
+
+const getFileFromEvent = (files: FileList | undefined | null): File | undefined => {
+  if (!files) return undefined
+  return files[0]
+}
 
 const AddOrganization = () => {
+  const dispatch = useDispatch()
   const {
     handleSubmit,
     control,
-    formState: { errors }
+    formState: { errors, isSubmitting }
   } = useForm<Organization>()
 
   const onSubmit = async (data: Organization) => {
-    await createOrganization(data)
+    const {banner, logo, ...rest } = data
+
+    let bannerId:string  = ''
+    let logoId: string = ''
+
+    if (banner && banner instanceof File) {
+      const assets = await uploadFile(banner)
+      bannerId = assets.public_id
+    }
+    if (logo && logo instanceof File) {
+      const assets = await uploadFile(logo)
+      logoId = assets.public_id
+    }
+
+    const organizationData = {
+      ...rest,
+      banner: bannerId,
+      logo: logoId
+    }
+    await createOrganization(organizationData)
+    await dispatch(fetchOrganizations())
   }
 
   return (
@@ -85,38 +126,66 @@ const AddOrganization = () => {
               control={control}
               defaultValue=""
               render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="Banner URL"
+                <Button
+                  component="label"
+                  role={undefined}
                   variant="outlined"
+                  color="inherit"
                   fullWidth
-                />
+                  tabIndex={-1}
+                  startIcon={<CloudUploadIcon />}
+                  sx={{ height: '53px' }}
+                >
+                  {(field.value as File).name || 'Select logo'}
+                  <VisuallyHiddenInput 
+                    type="file"
+                    onChange={(e)=>field.onChange(
+                      getFileFromEvent(e.target.files))
+                    }
+                  />
+                </Button>
               )}
             />
           </Grid>
-
           <Grid item xs={12} sm={6}>
             <Controller
               name="logo"
               control={control}
               defaultValue=""
               render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="Logo URL"
+                <Button
+                  component="label"
+                  role={undefined}
                   variant="outlined"
+                  color="inherit"
                   fullWidth
-                />
+                  tabIndex={-1}
+                  startIcon={<CloudUploadIcon />}
+                  sx={{ height: '53px' }}
+                >
+                  {(field.value as File).name || 'Select logo'}
+                  <VisuallyHiddenInput 
+                  type="file" 
+                  onChange={(e)=>field.onChange(
+                    getFileFromEvent(e.target.files))
+                  }
+                  />
+                </Button>
               )}
             />
           </Grid>
-
-          <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <Grid
+            item
+            xs={12}
+            sx={{ display: 'flex', justifyContent: 'flex-end' }}
+          >
             <Button
               type="submit"
               size="large"
               variant="contained"
               color="inherit"
+              disabled={isSubmitting}
+              endIcon={isSubmitting ?? <CloudUploadIcon />}
             >
               Submit
             </Button>

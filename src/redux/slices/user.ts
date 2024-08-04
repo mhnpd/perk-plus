@@ -10,18 +10,11 @@ export interface UserState {
 }
 
 const initialState: UserState = {
-  profile: {
-    userId: '',
-    email: '',
-    firstName: '',
-    lastName: '',
-    phone: '',
-    role: 'user'
-  },
+  profile: null,
   defaultOrganizationId: null
 }
 
-export const fetchuserProfile: any = createAsyncThunk(
+export const fetchUserProfile: any = createAsyncThunk(
   'user/fetchUserProfile',
   async () => {
     const profile = await getUserProfile()
@@ -41,10 +34,10 @@ export const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchuserProfile.fulfilled, (state, action) => {
+      .addCase(fetchUserProfile.fulfilled, (state, action) => {
         state.profile = action.payload
       })
-      .addCase(fetchuserProfile.rejected, (state) => {
+      .addCase(fetchUserProfile.rejected, (state) => {
         state.profile = null
       })
   }
@@ -59,4 +52,5 @@ export const {
 const selfSelector = (state: RootState) => state.user
 
 export const selectProfile = (state: RootState) => selfSelector(state).profile
+
 export const getDefaultOrg = (state: RootState) => selfSelector(state).defaultOrganizationId

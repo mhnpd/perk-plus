@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchOrganizations, selectUsersOrganization } from '../redux/slices/orgs'
-import { fetchuserProfile, getDefaultOrg, setDefaultOrganizationId } from '../redux/slices/user'
+import { fetchUserProfile, getDefaultOrg, setDefaultOrganizationId } from '../redux/slices/user'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import Grid from '@mui/material/Grid'
@@ -34,7 +34,7 @@ const DataLoader: React.FC<DataLoaderProps> = ({
     setLoading(true)
     setDefaultOrganization().then(() => {
       dispatch(fetchCard(defaultOrgId))
-      dispatch(fetchuserProfile())
+      dispatch(fetchUserProfile())
       setLoading(false)
     })
   }, [defaultOrgId])

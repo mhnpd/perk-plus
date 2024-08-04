@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
   Box,
   Switch,
@@ -6,12 +6,12 @@ import {
   FormControlLabel,
   Card,
   FormHelperText,
-  Avatar,
+  Avatar
 } from '@mui/material'
 import { styled } from '@mui/system'
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera'
 import { uploadFile } from '../../../api/file'
-import { selectProfile, updateUserProfile } from '../../../redux/slices/user'
+import { fetchUserProfile, selectProfile } from '../../../redux/slices/user'
 import { postUserUpdateProfile } from '../../../api/user'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -32,21 +32,22 @@ const UserPhotoUpload: React.FC = () => {
   const dispatch = useDispatch()
   const profile = useSelector(selectProfile)
   const [isVerified, setIsVerified] = React.useState(true)
+  const [image, setImage] = React.useState<string | null>(null)
 
   const handlePhotoUpload = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    try {
-      if (event.target.files && event.target.files[0]) {
-        const file = event.target.files[0]
-        const { public_id } = await uploadFile(file)
-        const user = await postUserUpdateProfile({ profileImage: public_id })
-        dispatch(updateUserProfile(user))
-      }
-    } catch (error) {
-      console.error(error)
+    if (event.target.files && event.target.files[0]) {
+      const file = event.target.files[0]
+      const { public_id } = await uploadFile(file)
+      await postUserUpdateProfile({ profileImage: public_id })
+      await dispatch(fetchUserProfile())
     }
   }
+
+  useEffect(() => {
+    setImage(profile?.profileImage || '')
+  }, [profile])
 
   const handleVerificationChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -72,18 +73,45 @@ const UserPhotoUpload: React.FC = () => {
           onChange={handlePhotoUpload}
         />
         <label htmlFor="upload-photo">
-          <UploadBox>
-            {!profile?.profileImage && <PhotoCameraIcon color="action" />}
-            {profile?.profileImage && (
+          {!image && (
+            <UploadBox>
+              <PhotoCameraIcon color="action" />
+              <Typography variant="body2">Upload photo</Typography>
+            </UploadBox>
+          )}
+          {image && (
+            <Box position="relative">
               <Avatar
-                src={profile?.profileImage}
-                sx={{ width: 150, height: 150 }}
+                src={image}
+                sx={{
+                  width: '150px',
+                  height: '150px',
+                  border: `4px dashed grey`,
+                  position: 'relative',
+                  cursor: 'pointer',
+                  boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)'
+                }}
               />
-            )}
-            <Typography variant="body2">Upload photo</Typography>
-          </UploadBox>
+              <PhotoCameraIcon
+                color="inherit"
+                sx={{
+                  fontSize: '50px',
+                  position: 'absolute',
+                  left: '20px',
+                  top: '17px',
+                  backgroundColor: 'white',
+                  margin: 4,
+                  cursor: 'pointer',
+                  backdropFilter: 'blur(4px)',
+                  borderRadius: '50%',
+                  opacity: 0.3,
+                  zIndex: 3
+                }}
+              />
+            </Box>
+          )}
         </label>
-        <FormHelperText>
+        <FormHelperText sx={{ mt: 3 }}>
           Allowed *.jpeg, *.jpg, *.png, *.gif max size of 3 Mb
         </FormHelperText>
       </Box>

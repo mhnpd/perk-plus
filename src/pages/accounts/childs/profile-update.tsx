@@ -14,7 +14,7 @@ import {
 } from '@mui/material'
 import { postUserUpdateProfile, User } from '../../../api/user'
 import { useDispatch } from 'react-redux'
-import { updateUserProfile } from '../../../redux/slices/user'
+import { fetchUserProfile } from '../../../redux/slices/user'
 
 const countries = getNames()
 
@@ -25,8 +25,9 @@ const UserForm: React.FC<{ user: User | null }> = ({ user }) => {
   })
 
   const onSubmit = async (data: User) => {
-   const user = await postUserUpdateProfile(data)
-   dispatch(updateUserProfile(user))
+   delete data.profileImage
+   await postUserUpdateProfile(data)
+   await dispatch(fetchUserProfile())
   }
 
   return (
@@ -128,7 +129,7 @@ const UserForm: React.FC<{ user: User | null }> = ({ user }) => {
               render={({ field }) => (
                 <FormControl variant="outlined" fullWidth>
                   <InputLabel>Country</InputLabel>
-                  <Select {...field} label="Country">
+                  <Select {...field} value={field.value || ''} label="Country">
                     {countries.map((country) => (
                       <MenuItem key={country} value={country}>
                         {country}

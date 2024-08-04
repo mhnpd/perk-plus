@@ -10,7 +10,6 @@ import Typography from '@mui/material/Typography'
 import { usePathname } from '../hooks/use-pathname'
 import { RouterLink } from '../shared/router-link'
 import { useResponsive } from '../hooks/use-responsive'
-import { account } from '../_mock_data/account'
 import { Logo } from '../components/logo'
 import { Scrollbar } from '../components/scrollbar'
 import { NAV } from './config-layout'
@@ -57,13 +56,13 @@ export default function Nav({ openNav, onCloseNav }: NavProps) {
         bgcolor: (theme) => alpha(theme.palette.grey[500], 0.12)
       }}
     >
-      <Avatar src={account.photoURL} alt="photoURL" />
+      <Avatar src={user?.profileImage} alt="photoURL" />
 
       <Box sx={{ ml: 2 }}>
         <Typography variant="subtitle2">{getDisplayName(user)}</Typography>
 
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-          {account.role}
+          {user?.email}
         </Typography>
       </Box>
     </Box>

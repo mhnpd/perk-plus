@@ -7,11 +7,12 @@ import { alpha } from '@mui/material/styles'
 import MenuItem from '@mui/material/MenuItem'
 import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
-import { account } from '../_mock_data/account'
 import { getDisplayName } from '../shared/get-display-name'
 import { AppConfig } from '../constants/config'
 import { useNavigate } from 'react-router-dom'
 import { removeSessionCookie } from '../shared/session-cookie'
+import { useSelector } from 'react-redux'
+import { selectProfile } from '../redux/slices/user'
 
 const MENU_OPTIONS = [
   {
@@ -39,12 +40,8 @@ const MENU_OPTIONS = [
 export function AccountPopover() {
   const navigate = useNavigate()
   const [open, setOpen] = useState<HTMLElement | null>(null)
-  const user = {
-    firstName: 'John',
-    lastName: 'Doe',
-    email: 'r ...@gmail.com',
-    photoURL: ''
-  }
+  const user = useSelector(selectProfile)
+
 
   const handleClose = () => {
     setOpen(null)
@@ -76,7 +73,7 @@ export function AccountPopover() {
         }}
       >
         <Avatar
-          src={account.photoURL}
+          src={user?.profileImage}
           alt={getDisplayName(user)}
           sx={{
             width: 36,

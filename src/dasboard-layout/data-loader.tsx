@@ -23,22 +23,32 @@ const DataLoader: React.FC<DataLoaderProps> = ({
 
 
   const setDefaultOrganization = async () => {
-    await dispatch(fetchOrganizations())
-    if (!defaultOrgId) {
-      dispatch(setDefaultOrganizationId(organizations[0].organizationId))
+    try {
+      await dispatch(fetchOrganizations());
+      if (!defaultOrgId && organizations.length > 0) {
+        const firstOrgId = organizations[0].organizationId;
+        dispatch(setDefaultOrganizationId(firstOrgId));
+        return firstOrgId;
+      }
+      return defaultOrgId;
+    } catch (error) {
+      console.error("Failed to set default organization:", error);
+      return null;
     }
-  }
-
-
+  };
+  
   useEffect(() => {
-    setLoading(true)
-    setDefaultOrganization().then(() => {
-      dispatch(fetchCard(defaultOrgId))
-      dispatch(fetchUserProfile())
-      setLoading(false)
-    })
-  }, [defaultOrgId])
-
+    const initialize = async () => {
+      const orgId = await setDefaultOrganization();
+      if (orgId) {
+        await dispatch(fetchCard(orgId));
+        await dispatch(fetchUserProfile());
+      }
+      setLoading(false);
+    };
+  
+    initialize();
+  }, [defaultOrgId]);
 
   if (loading) {
     return (

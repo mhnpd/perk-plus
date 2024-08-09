@@ -13,10 +13,10 @@ import DataLoader from './dasboard-layout/data-loader'
 
 const DashboardLayout = lazy(() => import('./dasboard-layout'))
 const LoginPage = lazy(() => import('./pages/login/login'))
-const EnrollInPerkMembership = lazy(() => import('./pages/enroll-perk-membership'))
+const EnrollInPerkMembership = lazy(
+  () => import('./pages/enroll-perk-membership')
+)
 const Home = lazy(() => import('./pages/home'))
-
-
 
 export default function App() {
   const routes = useRoutes([
@@ -34,18 +34,18 @@ export default function App() {
         <Suspense fallback={<Loading />}>
           <EnrollInPerkMembership />
         </Suspense>
-      ),
+      )
     },
     {
       path: 'app',
       element: (
         <Suspense fallback={<Loading />}>
           <AuthGuard>
-            <DashboardLayout>
-              <DataLoader>
+            <DataLoader>
+              <DashboardLayout>
                 <Outlet />
-              </DataLoader>
-            </DashboardLayout>
+              </DashboardLayout>
+            </DataLoader>
           </AuthGuard>
         </Suspense>
       ),
@@ -55,8 +55,7 @@ export default function App() {
         { path: '/app/add-organization', element: <OrganizationHome /> },
         { path: '/app/users', element: <UsersPage /> },
         { path: '/app/members', element: <MemebersPage /> },
-        { path: '/app/admins', element: <AdminsPage /> },
-
+        { path: '/app/admins', element: <AdminsPage /> }
       ]
     },
     {

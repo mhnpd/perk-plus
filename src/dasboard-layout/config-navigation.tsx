@@ -1,5 +1,15 @@
 import { SvgColor } from '../components/svg-color'
 
+export interface NavigationItem {
+  title: string;
+  path?: string;
+  icon: JSX.Element;
+  children?: {
+    title: string;
+    path: string;
+  }[];
+}
+
 const icon = (name: string) => (
   <SvgColor
     src={`/assets/icons/navbar/${name}.svg`}
@@ -7,16 +17,29 @@ const icon = (name: string) => (
   />
 )
 
-const navConfig = [
+const navConfig:NavigationItem[] = [
   {
     title: 'dashboard',
     path: '/app',
     icon: icon('ic_analytics')
   },
   {
-    title: 'user',
-    path: '/app/users',
+    title: 'user management',
     icon: icon('ic_user'),
+    children: [
+      {
+        title: 'Users',
+        path: '/app/users'
+      },
+      {
+        title: 'Members',
+        path: '/app/members'
+      },
+      {
+        title: 'Admins',
+        path: '/app/admins',
+      },
+    ]
   },
   {
     title: 'Members',

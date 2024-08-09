@@ -3,31 +3,20 @@ import { AppConfig } from '../../constants/config'
 import Container from '@mui/material/Container'
 import LoyaltyCard from './loyalty-card'
 import Box from '@mui/material/Box'
-import Typography from '@mui/material/Typography'
 import Grid from '@mui/material/Grid'
 import Stack from '@mui/material/Stack'
 import Card from '@mui/material/Card'
 import TimelineComponent from './childs/timeline'
 import { Divider } from '@mui/material'
 import UserProfile from './childs/profile'
-const data = {
-  organizationName: 'Tech Innovators',
-  userName: 'John Doe',
-  totalPoints: 1200,
-  userLevel: 'Gold',
-}
 
 export default function Home() {
-
   return (
     <>
       <Helmet>
         <title>{`Home | ${AppConfig.AppName}`}</title>
       </Helmet>
       <Container maxWidth="xl">
-        <Typography variant="h4" sx={{ mb: 5 }}>
-          Hi, Welcome back 👋
-        </Typography>
         <Card component={Stack} direction="row" sx={{ px: 3, py: 5, borderRadius: 2 }}>
           <Grid container>
             <Grid item xs={12} md={4}>
